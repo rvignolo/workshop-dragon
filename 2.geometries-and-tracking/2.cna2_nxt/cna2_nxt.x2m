@@ -1,0 +1,137 @@
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* TALLER
+* Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
+* Grupo Argentino de Cálculo y Análisis de Reactores
+* III Reunión Anual
+*
+* File desc.: Geometry definition and Ray tracing
+* Ramiro Vignolo    <rvignolo@tecna.com>
+*                   <ramirovignolo@gmail.com>
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* DECLARATIONS
+*
+LINKED_LIST 
+            Geom 
+            Track ;
+SEQ_BINARY  Lines ;
+SEQ_ASCII   GeoMix  :: FILE './GeoMix.ps' ;
+SEQ_ASCII   GeoReg  :: FILE './GeoReg.ps' ;
+SEQ_ASCII   Tracks  :: FILE './Tracks.m'  ;
+*
+* Modules
+MODULE
+       GEO: NXT: PSP: TLM: END: ;
+*
+PROCEDURE DefParams ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* PARAMETERS DEFINITION
+*----
+* Geometry parameters.
+*----
+REAL hex_side r_fuel1 r_fuel2 r_fuel3 r_fuel4 r_cladd
+     r_mesh1 r_mesh2 r_mesh3 r_mesh4 r_mesh5 r_mesh6
+     r_tubo  r_gap  r_foil r_mod r_in_mod pi_6 pi_12
+     pi_18 track_dens ;
+INTEGER nmix_cool nmix_tubo nmix_gap nmix_foil nmix_mod 
+        nmix_clad nmix_fuel1 nmix_fuel2 nmix_fuel3 nmix_fuel4 
+        nang ;
+*
+DefParams :: 
+  >>hex_side<< >>r_fuel1<< >>r_fuel2<< >>r_fuel3<< >>r_fuel4<< 
+  >>r_cladd<< >>r_mesh1<< >>r_mesh2<< >>r_mesh3<< >>r_mesh4<< 
+  >>r_mesh5<< >>r_mesh6<< >>r_tubo<< >>r_gap<< >>r_foil<< 
+  >>r_mod<< >>r_in_mod<< >>nmix_cool<< >>nmix_tubo<< >>nmix_gap<<
+  >>nmix_foil<< >>nmix_mod<< >>nmix_clad<< >>nmix_fuel1<< 
+  >>nmix_fuel2<< >>nmix_fuel3<< >>nmix_fuel4<< >>pi_6<< >>pi_12<<
+  >>pi_18<< >>nang<< >>track_dens<<
+  ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* GEOMETRY DEFINITION AND REPRESENTATION
+*
+*----
+* Geometry
+*----
+Geom := GEO: :: HEXTCEL 11 1
+  HBC COMPLETE REFL
+  SIDE <<hex_side>>
+  RADIUS   0.00000
+         <<r_mesh1>> 
+         <<r_mesh2>> 
+         <<r_mesh3>> 
+         <<r_mesh4>> 
+         <<r_mesh5>> 
+         <<r_mesh6>>
+         <<r_tubo>> 
+         <<r_gap>>
+         <<r_foil>>
+         <<r_mod>>
+         <<r_in_mod>>
+  MIX <<nmix_cool>> <<nmix_cool>> <<nmix_cool>> <<nmix_cool>> 
+      <<nmix_cool>> <<nmix_cool>> <<nmix_cool>> <<nmix_tubo>> 
+      <<nmix_gap>>  <<nmix_foil>> <<nmix_mod>>  <<nmix_mod>>
+  SPLITR 1 1 1 1 1 1 1 1 1 1 20
+  CLUSTER CORONA_1 CORONA_2 CORONA_3 CORONA_4
+  ::: CORONA_1 := GEO: TUBE 5 2 2
+    RADIUS   0.00000
+           <<r_fuel1>>
+           <<r_fuel2>>
+           <<r_fuel3>>
+           <<r_fuel4>>
+           <<r_cladd>>
+    MESHX -0.645 0.0 <<r_cladd>>
+    MESHY -0.645 0.0 <<r_cladd>>
+    MIX <<nmix_fuel1>> <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>>
+        <<nmix_clad>>
+        <<nmix_fuel1>> <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>>
+        <<nmix_clad>>
+        <<nmix_fuel1>> <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>>
+        <<nmix_clad>>
+        <<nmix_fuel1>> <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>>
+        <<nmix_clad>>
+    NPIN  1 RPIN   0.0000    APIN 0.000000 ;
+  ::: CORONA_2 := GEO: CORONA_1
+    NPIN  6 RPIN <<r_mesh2>> APIN <<pi_6>> ;
+  ::: CORONA_3 := GEO: CORONA_1
+    NPIN 12 RPIN <<r_mesh4>> APIN <<pi_12>> ;
+  ::: CORONA_4 := GEO: CORONA_1
+    NPIN 18 RPIN <<r_mesh6>> APIN <<pi_18>> ;
+  ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* TRACKING
+*
+Lines Track := NXT: Geom ::
+  EDIT 0
+  TISO <<nang>> <<track_dens>>
+  LONG
+  ;
+*
+*----
+* Geometry representation
+*----
+GeoMix := PSP: Track ::
+  FILL RGB
+  TYPE MIXTURE
+  ;
+GeoReg := PSP: Track ::
+  FILL RGB
+  TYPE REGI
+  ;
+*
+*----
+* Tracking representation
+*----
+Tracks := TLM: Track Lines ::
+  EDIT 1
+  NTPO 1
+  DIRECTIONS NoPause DIR 0
+  ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+END: ;
+QUIT .
