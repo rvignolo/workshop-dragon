@@ -13,49 +13,33 @@
 * DECLARATIONS
 *
 LINKED_LIST 
-            Geom_CS
-            Geom_SS
+            Geom_G1
+            Geom_G2
+            Geom_G3
+            Geom_G4
+            Geom_G5
             Track ;
 SEQ_BINARY  Lines ;
-SEQ_ASCII   GeoMix  :: FILE './GeoMix.ps' ;
-SEQ_ASCII   GeoReg  :: FILE './GeoReg.ps' ;
-SEQ_ASCII   Tracks  :: FILE './Tracks.m'  ;
+SEQ_ASCII   GeoMix_G1    :: FILE './GeoMix_G1.ps'   ;
+SEQ_ASCII   GeoMix_G2    :: FILE './GeoMix_G2.ps'   ;
+SEQ_ASCII   GeoMix_G3    :: FILE './GeoMix_G3.ps'   ;
+SEQ_ASCII   GeoMix_G3_t  :: FILE './GeoMix_G3_t.ps' ;
+SEQ_ASCII   GeoMix_G4    :: FILE './GeoMix_G4.ps'   ;
+SEQ_ASCII   GeoMix_G5    :: FILE './GeoMix_G5.ps'   ;
+SEQ_ASCII   Tracks       :: FILE './Tracks.m'       ;
+SEQ_ASCII   Surfil       :: FILE './Surfil.sur'     ;
 *
 * Modules
 MODULE
-       GEO: NXT: PSP: TLM: END: ;
+       GEO: NXT: PSP: G2S: TLM: SALT: END: ;
 *
-PROCEDURE DefParams ;
-*
-*------------+--------------+-------+------+-----++----+++---++++--+++++
-* PARAMETERS DEFINITION
-*----
-* Geometry parameters.
-*----
-REAL hex_side r_fuel1 r_fuel2 r_fuel3 r_fuel4 r_cladd
-     r_mesh1 r_mesh2 r_mesh3 r_mesh4 r_mesh5 r_mesh6
-     r_tubo  r_gap  r_foil r_mod r_in_mod pi_6 pi_12
-     pi_18 track_dens ;
-INTEGER nmix_cool nmix_tubo nmix_gap nmix_foil nmix_mod 
-        nmix_clad nmix_fuel1 nmix_fuel2 nmix_fuel3 nmix_fuel4 
-        nang ;
-*
-DefParams :: 
-  >>hex_side<< >>r_fuel1<< >>r_fuel2<< >>r_fuel3<< >>r_fuel4<< 
-  >>r_cladd<< >>r_mesh1<< >>r_mesh2<< >>r_mesh3<< >>r_mesh4<< 
-  >>r_mesh5<< >>r_mesh6<< >>r_tubo<< >>r_gap<< >>r_foil<< 
-  >>r_mod<< >>r_in_mod<< >>nmix_cool<< >>nmix_tubo<< >>nmix_gap<<
-  >>nmix_foil<< >>nmix_mod<< >>nmix_clad<< >>nmix_fuel1<< 
-  >>nmix_fuel2<< >>nmix_fuel3<< >>nmix_fuel4<< >>pi_6<< >>pi_12<<
-  >>pi_18<< >>nang<< >>track_dens<<
-  ;
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 * GEOMETRY DEFINITION AND REPRESENTATION
 *
 *----
-* Geometry
+* Geometries
 *----
-Geom_CS := GEO: :: CAR2D 4 4
+Geom_G1 := GEO: :: CAR2D 4 4
   X- DIAG X+ REFL Y- REFL Y+ DIAG
   CELL FUEL FUEL FUEL FUEL
             FUEL POIS FUEL
@@ -70,51 +54,117 @@ Geom_CS := GEO: :: CAR2D 4 4
     MIX 4 2 3 ;
   ;
 *
-Geom_SS := GEO: :: CAR2D 4 4  
-  X- REFL X+ REFL Y- REFL Y+ REFL
+Geom_G2 := GEO: :: CAR2D 4 4  
+  X- REFL X+ REFL Y- SSYM Y+ REFL
   CELL FUEL FUEL FUEL FUEL
        FUEL FUEL POIS FUEL
        FUEL POIS FUEL FUEL
        FUEL FUEL FUEL FUEL
   ::: FUEL := GEO: CARCEL 2
-    MESHX  -0.8 0.8 SPLITX 4
-    MESHY  -0.8 0.8 SPLITY 4
+    MESHX  -0.8 0.8
+    MESHY  -0.8 0.8
     RADIUS  0.0 0.5 0.6
     MIX 1 2 3 ;
   ::: POIS := GEO: FUEL 
     MIX 4 2 3 ;
   ;
 *
+Geom_G3 := GEO: :: CAR2D 4 4
+  X- DIAG X+ REFL Y- SYME Y+ DIAG
+  CELL FUEL FUEL FUEL FUEL
+            FUEL POIS FUEL
+                 FUEL FUEL
+                      FUEL
+  ::: FUEL := GEO: CARCEL 2
+    MESHX  -0.8 0.8 
+    MESHY  -0.8 0.8 
+    RADIUS  0.0 0.5 0.6
+    MIX 1 2 3 ;
+  ::: POIS := GEO: FUEL 
+    MIX 4 2 3 ;
+  ;
+*
+Geom_G4 := GEO: :: CAR2D 4 4  
+  X- REFL X+ REFL Y- SYME Y+ REFL
+  CELL FUEL FUEL FUEL FUEL
+       FUEL FUEL POIS FUEL
+       FUEL POIS FUEL FUEL
+       FUEL FUEL FUEL FUEL
+  ::: FUEL := GEO: CARCEL 2
+    MESHX  -0.8 0.8
+    MESHY  -0.8 0.8
+    RADIUS  0.0 0.5 0.6
+    MIX 1 2 3 ;
+  ::: POIS := GEO: FUEL 
+    MIX 4 2 3 ;
+  ;
+*
+Geom_G5 := GEO: :: CAR2D 4 4  
+  X- DIAG X+ REFL Y- REFL Y+ DIAG
+  CELL FUEL FUEL FUEL FUEL
+            FUEL POIS FUEL
+                 FUEL FUEL
+                      FUEL
+  ::: FUEL := GEO: CARCEL 2
+    MESHX  -0.8 0.8
+    MESHY  -0.8 0.8
+    RADIUS  0.0 0.5 0.6
+    SECT 4 0
+    MIX 1 1 1 1 1 1 1 1 
+        2 2 2 2 2 2 2 2
+        3 3 3 3 3 3 3 3 3 3 3 3 ;
+  ::: POIS := GEO: FUEL 
+    MIX 4 4 4 4 4 4 4 4
+        2 2 2 2 2 2 2 2
+        3 3 3 3 3 3 3 3 3 3 3 3 ;
+  ;
+*
+*----
+* Geometries representations
+*----
+GeoMix_G1 := PSP: Geom_G1 ::
+  FILL RGB
+  TYPE MIXTURE
+  ;
+*
+GeoMix_G2 := PSP: Geom_G2 ::
+  FILL RGB
+  TYPE MIXTURE
+  ;
+*
+GeoMix_G3 := PSP: Geom_G3 ::
+  FILL RGB
+  TYPE MIXTURE
+  ;
+*
+GeoMix_G4 := PSP: Geom_G4 ::
+  FILL RGB
+  TYPE MIXTURE
+  ;
+*
+(* magia *)
+Surfil GeoMix_G5 := G2S: Geom_G5 ::
+  DRAWMIX
+  ;
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 * TRACKING
 *
-Lines Track := NXT: Geom_CS ::
+Track Lines := SALT: Surfil ::
   EDIT 2
-  TISO 10 10.0
-  ;
-*
-*----
-* Geometry representation
-*----
-GeoMix := PSP: Track ::
-  FILL RGB
-  TYPE MIXTURE
-  ;
-GeoReg := PSP: Track ::
-  FILL RGB
-  TYPE REGI
+  TSPC 12 10.0
+  LONG
   ;
 *
 *----
 * Tracking representation
 *----
-! Tracks := TLM: Track Lines ::
-!   EDIT 1
-!   NTPO 1
-!   DIRECTIONS NoPause DIR 0
-!   ;
+Tracks := TLM: Track Lines ::
+  EDIT 1
+  NTPO 1
+  DIRECTIONS NoPause DIR 0
+  ;
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *
 END: ;

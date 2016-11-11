@@ -29,5 +29,6 @@ tail -5 ${output}; tput setaf 3; echo "    check out the ${output} file"; tput s
 echo
 
 # en este caso, dibujamos
-gv GeoMix.ps &
-gv GeoReg.ps &
+# for i in *.ps; do
+#   gv $i &
+# done
