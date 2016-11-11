@@ -14,6 +14,16 @@
 # clean directory
 ./clean.sh
 
+# add any option
+plot=0
+for opt in $*; do
+  case $opt in
+    -g) 
+        plot=1
+        ;;
+  esac
+done
+
 # lets find the dragon input
 input=`ls -la | grep *.x2m | awk '{print $9}'`
 
@@ -29,6 +39,9 @@ tail -5 ${output}; tput setaf 3; echo "    check out the ${output} file"; tput s
 echo
 
 # en este caso, dibujamos
-# for i in *.ps; do
-#   gv $i &
-# done
+if [ $plot = 1 ]; then
+  tput setaf 4; echo "GhostView Graphics are on"; tput sgr0
+  for i in *.ps; do
+    gv $i &
+  done
+fi

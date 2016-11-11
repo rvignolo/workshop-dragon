@@ -1,0 +1,181 @@
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* TALLER
+* Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
+* Grupo Argentino de Cálculo y Análisis de Reactores
+* III Reunión Anual
+*
+* File desc.: Geometry definition and Ray tracing
+* Author:  G. Marleau (DRAGON Manual pg. 277)
+* Adapted: R. Vignolo <rvignolo@tecna.com>
+*                     <ramirovignolo@gmail.com>
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* DECLARATIONS
+*
+LINKED_LIST 
+            Geom_G1
+            Geom_G2
+            Geom_G3
+            Geom_G4
+            Geom_G5
+            Track ;
+SEQ_BINARY  Lines ;
+SEQ_ASCII   GeoMix_G1    :: FILE './GeoMix_G1.ps'   ;
+SEQ_ASCII   GeoMix_G2    :: FILE './GeoMix_G2.ps'   ;
+SEQ_ASCII   GeoMix_G3    :: FILE './GeoMix_G3.ps'   ;
+SEQ_ASCII   GeoMix_G3_t  :: FILE './GeoMix_G3_t.ps' ;
+SEQ_ASCII   GeoMix_G4    :: FILE './GeoMix_G4.ps'   ;
+SEQ_ASCII   GeoMix_G5    :: FILE './GeoMix_G5.ps'   ;
+SEQ_ASCII   Tracks       :: FILE './Tracks.m'       ;
+SEQ_ASCII   Surfil       :: FILE './Surfil.sur'     ;
+*
+* Modules
+MODULE
+       GEO: NXT: PSP: G2S: TLM: SALT: END: ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* GEOMETRY DEFINITION AND REPRESENTATION
+*
+*----
+* Geometries
+*----
+Geom_G1 := GEO: :: CAR2D 4 4
+  X- DIAG X+ REFL Y- REFL Y+ DIAG
+  CELL FUEL FUEL FUEL FUEL
+            FUEL POIS FUEL
+                 FUEL FUEL
+                      FUEL
+  ::: FUEL := GEO: CARCEL 2
+    MESHX  -0.8 0.8 
+    MESHY  -0.8 0.8 
+    RADIUS  0.0 0.5 0.6
+    MIX 1 2 3 ;
+  ::: POIS := GEO: FUEL 
+    MIX 4 2 3 ;
+  ;
+*
+Geom_G2 := GEO: :: CAR2D 4 4  
+  X- REFL X+ REFL Y- SSYM Y+ REFL
+  CELL FUEL FUEL FUEL FUEL
+       FUEL FUEL POIS FUEL
+       FUEL POIS FUEL FUEL
+       FUEL FUEL FUEL FUEL
+  ::: FUEL := GEO: CARCEL 2
+    MESHX  -0.8 0.8
+    MESHY  -0.8 0.8
+    RADIUS  0.0 0.5 0.6
+    MIX 1 2 3 ;
+  ::: POIS := GEO: FUEL 
+    MIX 4 2 3 ;
+  ;
+*
+Geom_G3 := GEO: :: CAR2D 4 4
+  X- DIAG X+ REFL Y- SYME Y+ DIAG
+  CELL FUEL FUEL FUEL FUEL
+            FUEL POIS FUEL
+                 FUEL FUEL
+                      FUEL
+  ::: FUEL := GEO: CARCEL 2
+    MESHX  -0.8 0.8 
+    MESHY  -0.8 0.8 
+    RADIUS  0.0 0.5 0.6
+    MIX 1 2 3 ;
+  ::: POIS := GEO: FUEL 
+    MIX 4 2 3 ;
+  ;
+*
+Geom_G4 := GEO: :: CAR2D 4 4  
+  X- REFL X+ REFL Y- SYME Y+ REFL
+  CELL FUEL FUEL FUEL FUEL
+       FUEL FUEL POIS FUEL
+       FUEL POIS FUEL FUEL
+       FUEL FUEL FUEL FUEL
+  ::: FUEL := GEO: CARCEL 2
+    MESHX  -0.8 0.8
+    MESHY  -0.8 0.8
+    RADIUS  0.0 0.5 0.6
+    MIX 1 2 3 ;
+  ::: POIS := GEO: FUEL 
+    MIX 4 2 3 ;
+  ;
+*
+Geom_G5 := GEO: :: CAR2D 4 4  
+  X- DIAG X+ REFL Y- REFL Y+ DIAG
+  CELL FUEL FUEL FUEL FUEL
+            FUEL POIS FUEL
+                 FUEL FUEL
+                      FUEL
+  ::: FUEL := GEO: CARCEL 5
+    MESHX  -0.8 0.8
+    MESHY  -0.8 0.8
+    RADIUS  0.0 0.35336 0.4473 0.4874 0.5 0.6
+    SECT 4 0
+    MIX 1 1 1 1 1 1 1 1 
+        1 1 1 1 1 1 1 1 
+        1 1 1 1 1 1 1 1 
+        1 1 1 1 1 1 1 1 
+        2 2 2 2 2 2 2 2
+        3 3 3 3 3 3 3 3 3 3 3 3 ;
+  ::: POIS := GEO: CARCEL 4
+    MESHX  -0.8 0.8
+    MESHY  -0.8 0.8
+    RADIUS  0.0 0.25 0.55 0.6 0.75
+    SECT 4 1
+    MIX 4
+        4 4 4 4 4 4 4 4
+        4 4 4 4 4 4 4 4
+        2 2 2 2 2 2 2 2
+        3 3 3 3 3 3 3 3 3 3 3 3 ;
+  ;
+*
+*----
+* Geometries representations
+*----
+GeoMix_G1 := PSP: Geom_G1 ::
+  FILL RGB
+  TYPE MIXTURE
+  ;
+*
+GeoMix_G2 := PSP: Geom_G2 ::
+  FILL RGB
+  TYPE MIXTURE
+  ;
+*
+GeoMix_G3 := PSP: Geom_G3 ::
+  FILL RGB
+  TYPE MIXTURE
+  ;
+*
+GeoMix_G4 := PSP: Geom_G4 ::
+  FILL RGB
+  TYPE MIXTURE
+  ;
+*
+(* magia *)
+Surfil GeoMix_G5 := G2S: Geom_G5 ::
+  DRAWMIX
+  ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* TRACKING
+*
+Track Lines := SALT: Surfil ::
+  EDIT 2
+  TSPC 8 3.0
+  LONG
+  ;
+*
+*----
+* Tracking representation
+*----
+Tracks := TLM: Track Lines ::
+  EDIT 1
+  NTPO 1
+  DIRECTIONS NoPause DIR 0
+  ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+END: ;
+QUIT .

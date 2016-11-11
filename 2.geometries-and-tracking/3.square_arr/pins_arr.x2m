@@ -105,16 +105,25 @@ Geom_G5 := GEO: :: CAR2D 4 4
             FUEL POIS FUEL
                  FUEL FUEL
                       FUEL
-  ::: FUEL := GEO: CARCEL 2
+  ::: FUEL := GEO: CARCEL 5
     MESHX  -0.8 0.8
     MESHY  -0.8 0.8
-    RADIUS  0.0 0.5 0.6
+    RADIUS  0.0 0.35336 0.4473 0.4874 0.5 0.6
     SECT 4 0
     MIX 1 1 1 1 1 1 1 1 
+        1 1 1 1 1 1 1 1 
+        1 1 1 1 1 1 1 1 
+        1 1 1 1 1 1 1 1 
         2 2 2 2 2 2 2 2
         3 3 3 3 3 3 3 3 3 3 3 3 ;
-  ::: POIS := GEO: FUEL 
-    MIX 4 4 4 4 4 4 4 4
+  ::: POIS := GEO: CARCEL 4
+    MESHX  -0.8 0.8
+    MESHY  -0.8 0.8
+    RADIUS  0.0 0.25 0.55 0.6 0.75
+    SECT 4 1
+    MIX 4
+        4 4 4 4 4 4 4 4
+        4 4 4 4 4 4 4 4
         2 2 2 2 2 2 2 2
         3 3 3 3 3 3 3 3 3 3 3 3 ;
   ;
@@ -153,7 +162,7 @@ Surfil GeoMix_G5 := G2S: Geom_G5 ::
 *
 Track Lines := SALT: Surfil ::
   EDIT 2
-  TSPC 12 10.0
+  TSPC 8 3.0
   LONG
   ;
 *
