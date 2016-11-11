@@ -16,6 +16,7 @@ LINKED_LIST
             MacLib
             Geom_G1
             Geom_G2
+            Geom_G3
             Track 
             Pij 
             Flux ;
@@ -23,9 +24,11 @@ SEQ_BINARY  Lines ;
 SEQ_ASCII   GeoMix_G1    :: FILE './GeoMix_G1.ps'   ;
 SEQ_ASCII   GeoFlux_G1   :: FILE './GeoFlux_G1.ps'  ;
 SEQ_ASCII   GeoMix_G2    :: FILE './GeoMix_G2.ps'   ;
+SEQ_ASCII   GeoFlux_G2   :: FILE './GeoFlux_G2.ps'  ;
+SEQ_ASCII   GeoMix_G3    :: FILE './GeoMix_G3.ps'   ;
+SEQ_ASCII   GeoFlux_G3   :: FILE './GeoFlux_G3.ps'  ;
 SEQ_ASCII   Surfil       :: FILE './Surfil.sur'     ;
 SEQ_ASCII   Tracks       :: FILE './Tracks.m'       ;
-SEQ_ASCII   Flux_plot    :: FILE './Flux.ps'        ;
 *
 * Modules
 MODULE
@@ -111,7 +114,8 @@ Geom_G1 := GEO: :: CAR2D 4 4
   ;
 *
 Geom_G2 := GEO: :: CAR2D 4 4
-  X- DIAG X+ REFL Y- REFL Y+ DIAG
+  X- DIAG X+ REFL 
+  Y- REFL Y+ DIAG
   CELL FUEL FUEL FUEL FUEL
             FUEL POIS FUEL
                  FUEL FUEL
@@ -125,6 +129,41 @@ Geom_G2 := GEO: :: CAR2D 4 4
     MIX 4 2 3 ;
   ;
 *
+Geom_G3 := GEO: :: CAR2D 4 4
+  X- DIAG X+ REFL 
+  Y- REFL Y+ DIAG
+  CELL FUEL FUEL FUEL FUEL
+            FUEL POIS FUEL
+                 FUEL FUEL
+                      FUEL
+  ::: FUEL := GEO: CAR2D 1 1
+    MESHX  -0.8 0.8 SPLITX 5
+    MESHY  -0.8 0.8 SPLITY 5
+    MIX 3
+    CLUSTER PIN 
+    ::: PIN := GEO: TUBE 5 2 2
+      RADIUS  0.0 0.35336 0.4473 0.4874 0.5 0.6
+      MIX 1 1 1 1 2
+          1 1 1 1 2
+          1 1 1 1 2
+          1 1 1 1 2
+      NPIN  1 RPIN 0.0 APIN 0.785398163397 ;
+    ;
+  ::: POIS := GEO: CAR2D 1 1
+    MESHX  -0.8 0.8 SPLITX 5
+    MESHY  -0.8 0.8 SPLITY 5
+    MIX 3
+    CLUSTER PIN 
+    ::: PIN := GEO: TUBE 5 2 2
+      RADIUS  0.0 0.35336 0.4473 0.4874 0.5 0.6
+      MIX 4 4 4 4 2
+          4 4 4 4 2
+          4 4 4 4 2
+          4 4 4 4 2
+      NPIN  1 RPIN 0.0 APIN 0.785398163397 ;
+    ;
+  ;
+*
 *----
 * Geometries representations
 *----
@@ -134,6 +173,10 @@ Surfil GeoMix_G1 := G2S: Geom_G1 ::
   ;
 *
 GeoMix_G2 := PSP: Geom_G2 ::
+  TYPE MIXTURE
+  ;
+*
+GeoMix_G3 := PSP: Geom_G3 ::
   TYPE MIXTURE
   ;
 *------------+--------------+-------+------+-----++----+++---++++--+++++
@@ -173,7 +216,7 @@ Flux := FLU: Pij MacLib Track ::
   ;
 * 
 (* PSP: doesnt work with SALT: tracking *)
-! Flux_plot := PSP: Track Flux ::
+! GeoFlux_G1 := PSP: Track Flux ::
 !   TYPE FLUX
 !   TYPE MGFLUX
 !   ;
@@ -209,7 +252,43 @@ Flux := FLU: Pij MacLib Track ::
   TYPE K
   ;
 *
-Flux_plot := PSP: Track Flux ::
+GeoFlux_G2 := PSP: Track Flux ::
+  TYPE FLUX
+  TYPE MGFLUX
+  ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* DELETE
+*
+Flux Pij Track Lines := DELETE: Flux Pij Track Lines ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* TRACKING
+*
+Lines Track := NXT: Geom_G3 ::
+  EDIT 2
+  TISO 24 40.0
+  LONG
+  ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* FLUX CALCULATION
+*
+Pij := ASM: MacLib Track Lines ::
+  EDIT 3
+  PIJ        (*default*)
+  PNOR HELI  (*default*)
+  ;
+*
+Flux := FLU: Pij MacLib Track ::
+  EDIT 3  
+  TYPE K
+  ;
+*
+GeoFlux_G3 := PSP: Track Flux ::
   TYPE FLUX
   TYPE MGFLUX
   ;
