@@ -4,7 +4,8 @@
 * Grupo Argentino de Cálculo y Análisis de Reactores
 * III Reunión Anual
 *
-* File desc.: Geometry definition and Ray tracing
+* File desc.: Geometry definition for 2D CANDU-6 Supercell 
+*             HMIX usage (for EDI: and NXT: tracking module)
 * Author:  G. Marleau (DRAGON Manual pg. 277)
 * Adapted: R. Vignolo <rvignolo@tecna.com>
 *                     <ramirovignolo@gmail.com>
@@ -15,165 +16,178 @@
 *
 LINKED_LIST 
             Geom_G1
-            Geom_G2
-            Geom_G3
-            Geom_G4
-            Geom_G5
             Track ;
 SEQ_BINARY  Lines ;
-SEQ_ASCII   GeoMix_G1    :: FILE './GeoMix_G1.ps'   ;
-SEQ_ASCII   GeoMix_G2    :: FILE './GeoMix_G2.ps'   ;
-SEQ_ASCII   GeoMix_G3    :: FILE './GeoMix_G3.ps'   ;
-SEQ_ASCII   GeoMix_G3_t  :: FILE './GeoMix_G3_t.ps' ;
-SEQ_ASCII   GeoMix_G4    :: FILE './GeoMix_G4.ps'   ;
-SEQ_ASCII   GeoMix_G5    :: FILE './GeoMix_G5.ps'   ;
-SEQ_ASCII   Tracks       :: FILE './Tracks.m'       ;
-SEQ_ASCII   Surfil       :: FILE './Surfil.sur'     ;
+SEQ_ASCII   GeoMix_G1    :: FILE './GeoMix_G1.ps' ;
+SEQ_ASCII   GeoReg_G1    :: FILE './GeoReg_G1.ps' ;
+SEQ_ASCII   GeoHom_G1    :: FILE './GeoHom_G1.ps' ;
 *
 * Modules
 MODULE
-       GEO: NXT: PSP: G2S: TLM: SALT: END: ;
+       GEO: NXT: PSP: END: ;
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
-* GEOMETRY DEFINITION AND REPRESENTATION
+* GEOMETRY DEFINITION
 *
 *----
 * Geometries
 *----
-Geom_G1 := GEO: :: CAR2D 4 4
-  X- DIAG X+ REFL Y- REFL Y+ DIAG
-  CELL FUEL FUEL FUEL FUEL
-            FUEL POIS FUEL
-                 FUEL FUEL
-                      FUEL
-  ::: FUEL := GEO: CARCEL 2
-    MESHX  -0.8 0.8 
-    MESHY  -0.8 0.8 
-    RADIUS  0.0 0.5 0.6
-    MIX 1 2 3 ;
-  ::: POIS := GEO: FUEL 
-    MIX 4 2 3 ;
-  ;
-*
-Geom_G2 := GEO: :: CAR2D 4 4  
-  X- REFL X+ REFL Y- SSYM Y+ REFL
-  CELL FUEL FUEL FUEL FUEL
-       FUEL FUEL POIS FUEL
-       FUEL POIS FUEL FUEL
-       FUEL FUEL FUEL FUEL
-  ::: FUEL := GEO: CARCEL 2
-    MESHX  -0.8 0.8
-    MESHY  -0.8 0.8
-    RADIUS  0.0 0.5 0.6
-    MIX 1 2 3 ;
-  ::: POIS := GEO: FUEL 
-    MIX 4 2 3 ;
-  ;
-*
-Geom_G3 := GEO: :: CAR2D 4 4
-  X- DIAG X+ REFL Y- SYME Y+ DIAG
-  CELL FUEL FUEL FUEL FUEL
-            FUEL POIS FUEL
-                 FUEL FUEL
-                      FUEL
-  ::: FUEL := GEO: CARCEL 2
-    MESHX  -0.8 0.8 
-    MESHY  -0.8 0.8 
-    RADIUS  0.0 0.5 0.6
-    MIX 1 2 3 ;
-  ::: POIS := GEO: FUEL 
-    MIX 4 2 3 ;
-  ;
-*
-Geom_G4 := GEO: :: CAR2D 4 4  
-  X- REFL X+ REFL Y- SYME Y+ REFL
-  CELL FUEL FUEL FUEL FUEL
-       FUEL FUEL POIS FUEL
-       FUEL POIS FUEL FUEL
-       FUEL FUEL FUEL FUEL
-  ::: FUEL := GEO: CARCEL 2
-    MESHX  -0.8 0.8
-    MESHY  -0.8 0.8
-    RADIUS  0.0 0.5 0.6
-    MIX 1 2 3 ;
-  ::: POIS := GEO: FUEL 
-    MIX 4 2 3 ;
-  ;
-*
-Geom_G5 := GEO: :: CAR2D 4 4  
-  X- DIAG X+ REFL Y- REFL Y+ DIAG
-  CELL FUEL FUEL FUEL FUEL
-            FUEL POIS FUEL
-                 FUEL FUEL
-                      FUEL
-  ::: FUEL := GEO: CARCEL 5
-    MESHX  -0.8 0.8
-    MESHY  -0.8 0.8
-    RADIUS  0.0 0.35336 0.4473 0.4874 0.5 0.6
-    SECT 4 0
-    MIX 1 1 1 1 1 1 1 1 
-        1 1 1 1 1 1 1 1 
-        1 1 1 1 1 1 1 1 
-        1 1 1 1 1 1 1 1 
-        2 2 2 2 2 2 2 2
-        3 3 3 3 3 3 3 3 3 3 3 3 ;
-  ::: POIS := GEO: CARCEL 4
-    MESHX  -0.8 0.8
-    MESHY  -0.8 0.8
-    RADIUS  0.0 0.25 0.55 0.6 0.75
-    SECT 4 1
-    MIX 4
-        4 4 4 4 4 4 4 4
-        4 4 4 4 4 4 4 4
-        2 2 2 2 2 2 2 2
-        3 3 3 3 3 3 3 3 3 3 3 3 ;
-  ;
-*
-*----
-* Geometries representations
-*----
-GeoMix_G1 := PSP: Geom_G1 ::
-  FILL RGB
-  TYPE MIXTURE
-  ;
-*
-GeoMix_G2 := PSP: Geom_G2 ::
-  FILL RGB
-  TYPE MIXTURE
-  ;
-*
-GeoMix_G3 := PSP: Geom_G3 ::
-  FILL RGB
-  TYPE MIXTURE
-  ;
-*
-GeoMix_G4 := PSP: Geom_G4 ::
-  FILL RGB
-  TYPE MIXTURE
-  ;
-*
-(* magia *)
-Surfil GeoMix_G5 := G2S: Geom_G5 ::
-  DRAWMIX
-  ;
-*------------+--------------+-------+------+-----++----+++---++++--+++++
-*
-*------------+--------------+-------+------+-----++----+++---++++--+++++
-* TRACKING
-*
-Track Lines := SALT: Surfil ::
-  EDIT 2
-  TSPC 8 3.0
-  LONG
-  ;
-*
-*----
-* Tracking representation
-*----
-Tracks := TLM: Track Lines ::
+Geom_G1 := GEO: :: CAR2D 5 3
   EDIT 1
-  NTPO 1
-  DIRECTIONS NoPause DIR 0
+  X- REFL X+ REFL
+  Y- REFL Y+ REFL 
+  CELL  M    MXL   MX2  MXR  M
+        MY   FXYL  BXY  FXYR MY
+        M    MXL   MX2  MXR  M
+  ::: M := GEO: CAR2D 1 1
+    MESHX  0.0     7.14375   SPLITX  2
+    MESHY  0.0     7.14375   SPLITY  2
+    HMIX 0 
+    MIX  5 ;
+  ::: MXL := GEO: CAR2D 2 1
+    MESHX -7.14375 0.0 7.14375  SPLITX 3  3
+    MESHY  0.0     7.14375   SPLITY 3
+    HMIX    0  1   
+    MIX     5 15 ;
+  ::: MX2 := GEO: CAR2D 1 1 
+    MESHX -7.14375 7.14375   SPLITX 6
+    MESHY  0.0     7.14375   SPLITY 3
+    HMIX    1  
+    MIX    15 ;
+  ::: MXR := GEO: CAR2D 2 1
+    MESHX -7.14375 0.0 7.14375  SPLITX 3  3
+    MESHY  0.0     7.14375   SPLITY 3
+    HMIX    1  0   
+    MIX    15  5 ;
+  ::: MY := GEO: CAR2D 1 2
+    MESHY -7.14375 0.0 7.14375   SPLITY 3  3
+    MESHX  0.0     7.14375   SPLITX 3
+    HMIX    0   0  
+    MIX     5   5 ;
+  ::: BXY := GEO: CARCEL 2
+    MESHX -7.14375 7.14375   SPLITX 6
+    MESHY -7.14375 7.14375   SPLITY 6
+    RADIUS 0.0  6.380  6.530
+    SPLITR  2      2
+    HMIX    1      1     1  
+    MIX    15     15    15  
+    CLUSTER ROD
+    ::: ROD := GEO: TUBE 4
+        NPIN 1 RPIN 0.0  APIN  0.0
+        RADIUS 0.0 5.4115  5.4877  5.5791  5.6553 
+        SPLITR    1     1      1       1               
+        HMIX      1     1      1       1      
+        MIX      15    14     21      14      ;    ;
+  ::: FXYL := GEO: CARCEL 5 2 1
+    MESHX -7.14375 0.0 7.14375   SPLITX 3 3
+    MESHY -7.14375 7.14375   SPLITY 6
+    RADIUS  0.00000 5.16890 5.60320  6.44780 6.58750  7.00
+    HMIX      0       0       0       0       0       0 
+              1       1       1       1       1       1
+    MIX       1       2       3       4       5       5      
+             11      12      13      14      15      15      
+    CLUSTER ROD1 ROD2L ROD2R ROD3L ROD3R ROD4L ROD4R 
+      ::: ROD1  := GEO: TUBE 2 1 2 MIX  6 10 16 20  HMIX 0 0 1 1
+                   NPIN  1 RPIN 0.0000 APIN 0.0000
+                   MESHX -0.6540 0.6540
+                   MESHY -0.6540 0.0 0.6540 
+                   RADIUS 0.00000 0.6122 0.6540 ;
+      ::: ROD2L := GEO: TUBE 2     MIX  7 10 HMIX 0 0 
+                   RADIUS 0.00000 0.6122 0.6540 
+                   NPIN  3 RPIN 1.4885 
+                   APIN 2.09439510 3.14159265 4.18879020 ;
+      ::: ROD2R := GEO: TUBE 2     MIX 17 20 HMIX 1 1
+                   RADIUS 0.00000 0.6122 0.6540 
+                   NPIN  3 RPIN 1.4885 
+                   APIN -1.04719755 0.0000 1.04719755 ;
+      ::: ROD3L := GEO: TUBE 2     MIX  8 10 HMIX 0 0
+                   RADIUS 0.00000 0.6122 0.6540 
+                   NPIN  6 RPIN 2.8755 
+                   APIN -2.87979327  -2.35619449  -1.83259571
+                         1.83259571   2.35619449   2.87979327 ;
+      ::: ROD3R := GEO: TUBE 2     MIX 18 20 HMIX 1 1
+                   RADIUS 0.00000 0.6122 0.6540 
+                   NPIN  6 RPIN 2.8755 
+                   APIN -1.30899694  -0.78539816  -0.26179939
+                         0.26179939   0.78539816   1.30899694 ;
+      ::: ROD4L := GEO: TUBE 2     MIX  9 10 HMIX 0 0
+                   RADIUS 0.00000 0.6122 0.6540 
+                   NPIN  9 RPIN 4.3305 
+                   APIN  1.74532925   2.09439510   2.44346095
+                         2.79252680   3.14159265   3.49065850
+                         3.83972435   4.18879020   4.53785606 ;
+      ::: ROD4R := GEO: TUBE 2     MIX 19 20 HMIX 1 1
+                   RADIUS 0.00000 0.6122 0.6540 
+                   NPIN  9 RPIN 4.3305 
+                   APIN -1.39626340  -1.04719755  -0.69813170
+                        -0.34906585   0.0          0.34906585
+                         0.69813170   1.04719755   1.39626340 ;
+  ;
+  ::: FXYR := GEO: CARCEL 5 2 1
+    MESHX -7.14375 0.0 7.14375   SPLITX 3 3
+    MESHY -7.14375 7.14375   SPLITY 6
+    RADIUS  0.00000 5.16890 5.60320  6.44780 6.58750  7.00
+    HMIX      1       1       1       1       1       1
+              0       0       0       0       0       0 
+    MIX      11      12      13      14      15      15
+              1       2       3       4       5       5      
+    CLUSTER ROD1 ROD2L ROD2R ROD3L ROD3R ROD4L ROD4R 
+      ::: ROD1  := GEO: TUBE 2 1 2 MIX 16 20  6 10  HMIX 1 1 0 0 
+                   NPIN  1 RPIN 0.0000 APIN 0.0000
+                   MESHX -0.6540 0.6540
+                   MESHY -0.6540 0.0 0.6540 
+                   RADIUS 0.00000 0.6122 0.6540 ;
+      ::: ROD2L := GEO: TUBE 2     MIX 17 20 HMIX 1 1 
+                   RADIUS 0.00000 0.6122 0.6540 
+                   NPIN  3 RPIN 1.4885 
+                   APIN 2.09439510 3.14159265 4.18879020 ;
+      ::: ROD2R := GEO: TUBE 2     MIX  7 10 HMIX 0 0
+                   RADIUS 0.00000 0.6122 0.6540 
+                   NPIN  3 RPIN 1.4885 
+                   APIN -1.04719755 0.0000 1.04719755 ;
+      ::: ROD3L := GEO: TUBE 2     MIX 18 20 HMIX 1 1
+                   RADIUS 0.00000 0.6122 0.6540 
+                   NPIN  6 RPIN 2.8755 
+                   APIN -2.87979327  -2.35619449  -1.83259571
+                         1.83259571   2.35619449   2.87979327 ;
+      ::: ROD3R := GEO: TUBE 2     MIX  8 10 HMIX 0 0
+                   RADIUS 0.00000 0.6122 0.6540 
+                   NPIN  6 RPIN 2.8755 
+                   APIN -1.30899694  -0.78539816  -0.26179939
+                         0.26179939   0.78539816   1.30899694 ;
+      ::: ROD4L := GEO: TUBE 2     MIX 19 20 HMIX 1 1
+                   RADIUS 0.00000 0.6122 0.6540 
+                   NPIN  9 RPIN 4.3305 
+                   APIN  1.74532925   2.09439510   2.44346095
+                         2.79252680   3.14159265   3.49065850
+                         3.83972435   4.18879020   4.53785606 ;
+      ::: ROD4R := GEO: TUBE 2     MIX  9 10 HMIX 0 0
+                   RADIUS 0.00000 0.6122 0.6540 
+                   NPIN  9 RPIN 4.3305 
+                   APIN -1.39626340  -1.04719755  -0.69813170
+                        -0.34906585   0.0          0.34906585
+                         0.69813170   1.04719755   1.39626340 ;
+  ;
+;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* GEOMETRY TRACKING AND REPRESENTATION
+*
+Track Lines := NXT: Geom_G1 ::
+  EDIT 5
+!   TISO 40 30.0
+  TISO 3  10.0
+  ;
+*
+GeoMix_G1 := PSP: Track ::
+  TYPE MIXTURE
+  ;
+GeoReg_G1 := PSP: Track ::
+  TYPE REGI
+  ;
+GeoHom_G1 := PSP: Track ::
+  TYPE HMIX
   ;
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *

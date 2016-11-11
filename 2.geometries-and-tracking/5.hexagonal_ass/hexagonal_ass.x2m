@@ -1,0 +1,110 @@
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* TALLER
+* Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
+* Grupo Argentino de Cálculo y Análisis de Reactores
+* III Reunión Anual
+*
+* File desc.: Geometry definition for 2D hexagonal assembly
+* Adapted: R. Vignolo <rvignolo@tecna.com>
+*                     <ramirovignolo@gmail.com>
+* (Some content of this file is taken from DRAGON manual pg. 232)
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* DECLARATIONS
+*
+LINKED_LIST 
+            Geom_G1
+            Geom_G2
+            Track ;
+SEQ_BINARY  Lines ;
+SEQ_ASCII   GeoMix_G1    :: FILE './GeoMix_G1.ps' ;
+SEQ_ASCII   GeoReg_G1    :: FILE './GeoReg_G1.ps' ;
+SEQ_ASCII   GeoMix_G2    :: FILE './GeoMix_G2.ps'   ;
+SEQ_ASCII   Surfil       :: FILE './Surfil.sur'   ;
+*
+* Modules
+MODULE
+       GEO: NXT: G2S: PSP: END: ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* GEOMETRY DEFINITION
+*
+*----
+* Geometries
+*----
+Geom_G1 := GEO: ::  HEX 7
+  HBC COMPLETE REFL
+  CELL C1 C2 C1 C2 C1 C2 C1
+  ::: C1 := GEO: HEXT 4
+    SIDE 4.0 
+    MIX  
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    CLUSTER ROD1 ROD2 
+    ::: ROD1 := GEO: TUBE 2 MIX 17 18 NPIN  1 RPIN 0.0000 APIN 0.0000
+      RADIUS 0.00000 0.6122 0.6540 ;
+    ::: ROD2 := GEO: ROD1   MIX 17 18 NPIN  6 RPIN 1.4885 APIN 0.0000 ;
+    ;
+  ::: C2 := GEO: HEXT 4
+    SIDE 4.0 1.1
+    MIX  
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    ;
+  ;
+*
+Geom_G2 := GEO: ::  HEX 7
+  HBC COMPLETE VOID
+  CELL C1 C2 C1 C2 C1 C2 C1
+  ::: C1 := GEO: HEXCEL 4
+    SIDE 4.0
+    RADIUS 0.0 1.5 2.4 2.65 2.8
+    SECT -1 1
+    MIX 1
+        1 2 3 4 5 6
+        1 2 3 4 5 6
+        1 2 3 4 5 6
+        7 7 7 7 7 7
+        (* clusters not allowed with SECT keyword *)
+    ;
+  ::: C2 := GEO: C1
+    SECT -1 0
+    MIX 1 1 1 1 1 1
+        1 2 3 4 5 6
+        1 2 3 4 5 6
+        1 2 3 4 5 6
+        7 7 7 7 7 7
+    ;
+  ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* GEOMETRY TRACKING AND REPRESENTATION
+*
+Track Lines := NXT: Geom_G1 ::
+  EDIT 5
+  TISO 3  10.0
+  ;
+*
+GeoMix_G1 := PSP: Track ::
+  TYPE MIXTURE
+  ;
+GeoReg_G1 := PSP: Track ::
+  TYPE REGI
+  ;
+Surfil GeoMix_G2 := G2S: Geom_G2 ::
+  DRAWMIX
+  ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+END: ;
+QUIT .

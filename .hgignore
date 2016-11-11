@@ -1,0 +1,6 @@
+syntax: glob
+
+*.result
+*.ps
+*.m
+*.sur
