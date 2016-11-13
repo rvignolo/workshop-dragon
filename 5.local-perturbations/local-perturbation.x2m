@@ -1,0 +1,459 @@
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* TALLER
+* Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
+* Grupo Argentino de Cálculo y Análisis de Reactores
+* III Reunión Anual
+*
+* File desc.: Reference Burnup
+* Ramiro Vignolo    <rvignolo@tecna.com>
+*                   <ramirovignolo@gmail.com>
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* DECLARATIONS
+*
+LINKED_LIST Vectors
+            MicLib MicLib_S
+            GlobalGeo_S GlobalGeo_T
+            DataBase
+            ExcTrack_S ExcTrack_T
+            Pij
+            Flux
+            BurnUp
+            XS_cond ;
+SEQ_ASCII   GeoMix_S.ps  :: FILE './HexGeoMix_S.ps' ;
+SEQ_ASCII   GeoReg_S.ps  :: FILE './HexGeoReg_S.ps' ;
+SEQ_ASCII   GeoMix_T.ps  :: FILE './HexGeoMix_T.ps' ;
+SEQ_ASCII   GeoReg_T.ps  :: FILE './HexGeoReg_T.ps' ;
+SEQ_ASCII   Flux.ps      :: FILE './HexFlux.ps'     ;
+SEQ_ASCII   Database.dat :: FILE './Database.dat'   ;
+SEQ_BINARY  Lines_S Lines_T ;
+*
+MODULE
+  UTL: LIB: GEO:  COMPO:  PSP: EXCELT: USS: ASM: FLU: 
+  EVO: EDI: GREP: DELETE: ABORT: END: ;
+*
+PROCEDURE DefParams ;
+PROCEDURE DefGeos ;
+PROCEDURE DefLib ;
+PROCEDURE CalcFlux ;
+*
+*----
+* Library parameters.
+*----
+STRING Library ;
+INTEGER nmix nmix_cool nmix_tubo nmix_gap nmix_foil nmix_mod 
+        nmix_clad nmix_fuel1 nmix_fuel2 nmix_fuel3 nmix_fuel4 ;
+* Fixed parameters
+REAL trefr_0 drefr_0 ttubo tubo_dens tgap gap_dens tfoil tmod_0 dmod_0 
+     tclad_0 clad_dens tfuel1_0 tfuel2_0 tfuel3_0 tfuel4_0 UO2_dens 
+     q_lineal_0 ;
+* Variable parameters
+REAL trefr drefr tmod dmod tclad tfuel1 tfuel2 tfuel3 tfuel4 q_lineal 
+  ;
+* Resonant groups limits
+INTEGER grmin grmax ;
+*
+*----
+* Geometry parameters.
+*----
+REAL hex_side r_fuel1 r_fuel2 r_fuel3 r_fuel4 r_cladd
+     r_mesh1 r_mesh2 r_mesh3 r_mesh4 r_mesh5 r_mesh6
+     r_tubo  r_gap  r_foil r_mod r_in_mod vol_frac ;
+*
+*----
+* Tracking parameters.
+*----
+INTEGER nang ;
+REAL track_dens ;
+*
+*----
+* Burnup parameters.
+*----
+REAL apower f_burnup Kinf ;
+*
+*----
+* Get values for fixed parameters.
+*----
+DefParams ::
+  >>Library<<
+  >>nmix<< >>nmix_cool<< >>nmix_tubo<< >>nmix_gap<<
+  >>nmix_foil<< >>nmix_mod<< >>nmix_clad<< >>nmix_fuel1<< 
+  >>nmix_fuel2<< >>nmix_fuel3<< >>nmix_fuel4<<
+  >>trefr_0<< >>drefr_0<< >>ttubo<< >>tubo_dens<< >>tgap<< 
+  >>gap_dens<< >>tfoil<< >>tmod_0<< >>dmod_0<< >>tclad_0<< 
+  >>clad_dens<< >>tfuel1_0<< >>tfuel2_0<< >>tfuel3_0<< >>tfuel4_0<<
+  >>UO2_dens<< >>grmin<< >>grmax<< >>hex_side<< >>r_fuel1<< 
+  >>r_fuel2<< >>r_fuel3<< >>r_fuel4<< >>r_cladd<< >>r_mesh1<< 
+  >>r_mesh2<< >>r_mesh3<< >>r_mesh4<< >>r_mesh5<< >>r_mesh6<< 
+  >>r_tubo<< >>r_gap<< >>r_foil<< >>r_mod<< >>r_in_mod<< 
+  >>q_lineal_0<< >>apower<< >>f_burnup<< >>nang<< >>track_dens<<
+  >>vol_frac<<
+  ;
+*
+*----
+* Loop (variable) parameters.
+*----
+INTEGER burn_step  :=  1 ;
+INTEGER burn_size  := 31 ;
+INTEGER uss_step   :=  1 ;
+INTEGER uss_size   := 31 ;
+INTEGER trefr_step :=  0 ;
+INTEGER trefr_size :=  5 ;
+*
+REAL t_i bu_i := 0.0 0.0 ;
+REAL t_f bu_f := 0.0 0.0 ;
+*
+REAL next_bu_SS := 0.0 ;
+*
+Vectors := UTL: ::
+  CREA burnups <<burn_size>> =
+        0.0     0.1    50.0  100.0  150.0  200.0  400.0
+      600.0   800.0  1100.0 1400.0 1700.0 2000.0 2500.0
+     3000.0  3500.0  4000.0 4500.0 5000.0 5500.0 6000.0
+     6500.0  7000.0  7500.0 8000.0 8500.0 9000.0 9500.0
+    10000.0 10500.0 11000.0
+  ;
+Vectors := UTL: Vectors ::
+  CREA burnups_uss <<uss_size>> =
+         0.0     0.1    50.0  100.0  150.0  200.0  400.0
+       600.0   800.0  1100.0 1400.0 1700.0 2000.0 2500.0
+      3000.0  3500.0  4000.0 4500.0 5000.0 5500.0 6000.0
+      6500.0  7000.0  7500.0 8000.0 8500.0 9000.0 9500.0
+     10000.0 10500.0 11000.0
+  ;
+STRING TH_Parameter := "trefr" ;
+Vectors := UTL: Vectors ::
+  CREA tempsref <<trefr_size>> =
+    480.8809 510.5568 540.2326 569.9085 599.5843
+  ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* GEOMETRIES DECLARATION
+*
+GlobalGeo_S GlobalGeo_T := DefGeos :: 
+  <<hex_side>> <<r_mesh1>> <<r_mesh2>> <<r_mesh3>> <<r_mesh4>>
+  <<r_mesh5>> <<r_mesh6>> <<r_tubo>> <<r_gap>> <<r_foil>> 
+  <<r_mod>> <<r_in_mod>> <<r_fuel1>> <<r_fuel2>> <<r_fuel3>>
+  <<r_fuel4>> <<r_cladd>> <<nmix_cool>> <<nmix_tubo>> <<nmix_gap>>
+  <<nmix_foil>> <<nmix_mod>> <<nmix_fuel1>> <<nmix_fuel2>>
+  <<nmix_fuel3>> <<nmix_fuel4>> <<nmix_clad>>
+  ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* TRACKINGS AND GRAPHICS
+*
+*----
+* Tracking for Self-Shielding and Transport
+*----
+ExcTrack_S Lines_S := EXCELT: GlobalGeo_S ::
+  EDIT 0
+  MAXR 500
+  TRAK TISO <<nang>> <<track_dens>>
+  SYMM 12
+  ;
+*
+ExcTrack_T Lines_T := EXCELT: GlobalGeo_T ::
+  EDIT 0
+  MAXR 500
+  TRAK TISO <<nang>> <<track_dens>>
+  SYMM 12
+  ;
+*
+*----
+* Geometries representations for MIXTUREs and REGIONs
+*----
+GeoMix_S.ps := PSP: ExcTrack_S ::
+  FILL RGB
+  TYPE MIXTURE
+  ;
+GeoReg_S.ps := PSP: ExcTrack_S ::
+  FILL RGB
+  TYPE REGI
+  ;
+GeoMix_T.ps := PSP: ExcTrack_T ::
+  FILL RGB
+  TYPE MIXTURE
+  ;
+GeoReg_T.ps := PSP: ExcTrack_T ::
+  FILL RGB
+  TYPE REGI
+  ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* COMPO INITIALIZATION
+*
+*----
+* Create the reactor database
+*----
+DataBase := COMPO: ::
+  EDIT 0
+  STEP UP 'TABLE'
+  COMM 'Multicompo object for CNA2' ENDC
+  PARA 'burnup' IRRA
+  PARA 'pth'    VALU REAL
+  INIT
+  ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+************* ************** ******* ****** *****  ****   ***    **    *
+* REFERENCE BURNUP LOOP                                                *
+************* ************** ******* ****** *****  ****   ***    **    *
+*
+ECHO "### Reference Burnup Loop START" ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* LIBRARY READING
+*
+MicLib := DefLib ::
+  <<Library>> <<nmix>>
+  <<nmix_cool>> <<nmix_tubo>> <<nmix_gap>> 
+  <<nmix_foil>> <<nmix_mod>> <<nmix_clad>>
+  <<nmix_fuel1>> <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>>
+  <<trefr_0>> <<drefr_0>> <<ttubo>> <<tubo_dens>> <<tgap>>
+  <<gap_dens>> <<tfoil>> <<tmod_0>> <<dmod_0>> <<tclad_0>> 
+  <<clad_dens>> <<tfuel1_0>> <<tfuel2_0>> <<tfuel3_0>> <<tfuel4_0>>
+  <<UO2_dens>>
+  ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* INITIAL FLUX CALCULATION
+*
+GREP: Vectors :: GETVAL 'burnups_uss' <<uss_step>> >>next_bu_SS<< ;
+*
+MicLib_S Flux := CalcFlux MicLib ExcTrack_S Lines_S ExcTrack_T Lines_T 
+  :: 
+  <<burn_step>>
+  <<bu_f>> <<next_bu_SS>>
+  <<grmin>> <<grmax>>
+  >>Kinf<<
+  ;
+*
+EVALUATE uss_step := uss_step 1 + ;
+GREP: Vectors :: GETVAL 'burnups_uss' <<uss_step>> >>next_bu_SS<< ;
+*
+*----
+* Flux representation
+*----
+Flux.ps := PSP: ExcTrack_T Flux ::
+  TYPE FLUX
+  TYPE MGFLUX
+  ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* CREATE BURNUP STRUCTURE
+*
+EVALUATE bu_i t_i := bu_f t_f ;
+GREP: Vectors :: GETVAL 'burnups' <<burn_step>> >>bu_f<< ;
+EVALUATE t_f := bu_f f_burnup / ;
+*
+ECHO 'Burnup step' burn_step 'out of' burn_step ;
+ECHO 'Between ' bu_i 'and' bu_f 'MWd/tonne or' ;
+ECHO  t_i  'and' t_f  'day' ;
+*
+*----
+* Save in burnup structure
+*----
+BurnUp MicLib_S := EVO: MicLib_S Flux ExcTrack_T ::
+  EDIT 0
+  GLOB
+  SAVE <<t_i>> DAY W/CC <<apower>>
+  ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* 2-GROUPS ENERGY CONDENSATION AND HOMOGENISATION
+*
+ECHO 'Edition at burnup=' bu_f 'MWd/tonne and nominal parameters' ;
+*
+XS_cond := EDI: MicLib_S ExcTrack_T Flux GlobalGeo_T ::
+  EDIT 3
+  MERG COMP
+  COND 0.625
+  SAVE ON 'TABLE'
+  ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* DEPLETION - HOMOGENISATION
+*
+WHILE burn_step burn_size < DO
+
+  EVALUATE burn_step := burn_step 1 + ;
+  
+  EVALUATE bu_i t_i := bu_f t_f ;
+  GREP: Vectors :: GETVAL 'burnups' <<burn_step>> >>bu_f<< ;
+  EVALUATE t_f := bu_f f_burnup / ;
+  
+  ECHO 'Burnup step' burn_step 'out of' burn_size ;
+  ECHO 'Between ' bu_i 'and' bu_f 'MWd/tonne or' ;
+  ECHO  t_i  'and' t_f  'day' ;
+  
+  BurnUp MicLib_S := EVO: BurnUp MicLib_S Flux ExcTrack_T ::
+    GLOB
+    NOEX
+    SAVE <<t_i>> DAY W/CC <<apower>>
+    DEPL <<t_i>> <<t_f>> DAY W/CC <<apower>>
+    SET  <<t_f>> DAY
+    ;
+  
+  MicLib_S Flux := CalcFlux MicLib_S Flux MicLib ExcTrack_S Lines_S 
+    ExcTrack_T Lines_T :: 
+    <<burn_step>>
+    <<bu_f>> <<next_bu_SS>>
+    <<grmin>> <<grmax>>
+    >>Kinf<<
+    ;
+  
+  IF bu_f next_bu_SS - ABS 1E-5 < THEN
+   EVALUATE uss_step := uss_step 1 + ;
+   IF uss_step uss_size <= THEN
+     GREP: Vectors :: GETVAL 'burnups_uss' <<uss_step>> >>next_bu_SS<< ;
+   ENDIF ;
+  ENDIF ;
+  
+  XS_cond := EDI: XS_cond MicLib_S ExcTrack_T Flux GlobalGeo_T ::
+    EDIT 3
+    MERG COMP
+    COND 0.625
+    SAVE ON 'TABLE'
+    ;
+  
+  BurnUp MicLib_S := EVO: BurnUp MicLib_S Flux ExcTrack_T ::
+    SAVE <<t_f>> DAY W/CC <<apower>>
+    ;
+
+ENDWHILE ;
+*
+ECHO "### Reference Burnup Loop END" ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+MicLib MicLib_S := DELETE: MicLib MicLib_S ;
+Flux := DELETE: Flux ;
+*
+************* ************** ******* ****** *****  ****   ***    **    *
+* END OF REFERENCE BURNUP LOOP                                         *
+************* ************** ******* ****** *****  ****   ***    **    *
+*
+IF TH_Parameter "trefr" = THEN
+*
+************* ************** ******* ****** *****  ****   ***    **    *
+* COOLANT TEMPERATURE LOOP                                             *
+************* ************** ******* ****** *****  ****   ***    **    *
+*
+ECHO "### Coolant Temperature Loop START" ;
+WHILE trefr_step trefr_size < DO
+
+  EVALUATE trefr_step := trefr_step 1 + ;
+  
+  GREP: Vectors :: GETVAL 'tempsref' <<trefr_step>> >>trefr<< ;
+  
+  ECHO 'Trefr step' trefr_step 'out of' trefr_size ;
+  ECHO 'with trefr=' trefr 'K' ;
+  
+  MicLib := DefLib ::
+    <<Library>> <<nmix>>
+    <<nmix_cool>> <<nmix_tubo>> <<nmix_gap>> 
+    <<nmix_foil>> <<nmix_mod>> <<nmix_clad>>
+    <<nmix_fuel1>> <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>>
+    <<trefr>> <<drefr_0>> <<ttubo>> <<tubo_dens>> <<tgap>>
+    <<gap_dens>> <<tfoil>> <<tmod_0>> <<dmod_0>> <<tclad_0>> 
+    <<clad_dens>> <<tfuel1_0>> <<tfuel2_0>> <<tfuel3_0>> <<tfuel4_0>>
+    <<UO2_dens>>
+    ;
+  
+  EVALUATE burn_step := 0 ;
+  EVALUATE uss_step  := 1 ;
+  EVALUATE t_f bu_f  := 0.0 0.0 ;
+  
+  GREP: Vectors :: GETVAL 'burnups_uss' <<uss_step>> >>next_bu_SS<< ;
+  
+  WHILE burn_step burn_size < DO
+    
+    EVALUATE burn_step := burn_step 1 + ;
+    
+    EVALUATE bu_i t_i := bu_f t_f ;
+    GREP: Vectors :: GETVAL 'burnups' <<burn_step>> >>bu_f<< ;
+    EVALUATE t_f := bu_f f_burnup / ;
+    
+    ECHO 'Burnup step' burn_step 'out of' burn_size ;
+    ECHO 'Between ' bu_i 'and' bu_f 'MWd/tonne or' ;
+    ECHO  t_i  'and' t_f  'day' ;
+    
+    IF burn_step 1 = THEN
+      MicLib_S Flux := CalcFlux MicLib ExcTrack_S Lines_S 
+        ExcTrack_T Lines_T :: 
+        <<burn_step>>
+        <<bu_f>> <<next_bu_SS>>
+        <<grmin>> <<grmax>>
+        >>Kinf<<
+        ;
+    ELSE
+      MicLib_S := LIB: MicLib_S BurnUp ::
+        EDIT 0
+        BURN <<burn_step>>
+        MIX <<nmix_fuel1>> MIX <<nmix_fuel2>>
+        MIX <<nmix_fuel3>> MIX <<nmix_fuel4>>
+        ;
+      MicLib_S Flux := CalcFlux MicLib_S Flux MicLib ExcTrack_S Lines_S 
+        ExcTrack_T Lines_T :: 
+        <<burn_step>>
+        <<bu_f>> <<next_bu_SS>>
+        <<grmin>> <<grmax>>
+        >>Kinf<<
+        ;
+    ENDIF ;
+    
+    IF bu_f next_bu_SS - ABS 1E-5 < THEN
+     EVALUATE uss_step := uss_step 1 + ;
+     IF uss_step uss_size <= THEN
+       GREP: Vectors :: GETVAL 'burnups_uss' <<uss_step>> >>next_bu_SS<< ;
+     ENDIF ;
+    ENDIF ;
+    
+    XS_cond := EDI: XS_cond MicLib_S ExcTrack_T Flux GlobalGeo_T ::
+      EDIT 3
+      MERG COMP
+      COND 0.625
+      SAVE ON 'TABLE'
+      ;
+    
+    DataBase := COMPO: DataBase XS_cond BurnUp MicLib ::
+      EDIT 0
+      STEP UP 'TABLE'
+      'pth' <<trefr>>
+      SET <<t_f>> DAY
+      ;
+    
+  ENDWHILE ; ! burnup loop
+  
+  MicLib MicLib_S := DELETE: MicLib MicLib_S ;
+  Flux := DELETE: Flux ;
+  
+ENDWHILE ; ! trefr loop
+*
+ECHO "### Coolant Temperature Loop END" ; 
+*
+************* ************** ******* ****** *****  ****   ***    **    *
+* END OF COOLANT TEMPERATURE LOOP                                      *
+************* ************** ******* ****** *****  ****   ***    **    *
+*
+ENDIF ;
+*
+Database.dat := DataBase ;
+*
+END: ;
+QUIT .

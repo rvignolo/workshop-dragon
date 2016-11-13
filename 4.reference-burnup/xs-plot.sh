@@ -21,9 +21,10 @@ for i in `seq 0 ${nxs}`; do
      -Dcoef=${xsnamestex[$i]} \
      -Dindex=`echo "$i + 2" |bc` \
      -Dstyle1=`echo "$i + 2" |bc` xs-burn-ppl.m4 > pyxplot.ppl
-     
+  
+  printf "  plotting ${xsnames[$i]}..."
   pyxplot pyxplot.ppl 
-  echo "${xsnames[$i]}"
+  printf "ok!\n"
 done
 rm pyxplot.ppl
 echo "joining pdfs"

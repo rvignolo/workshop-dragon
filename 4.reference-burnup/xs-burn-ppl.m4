@@ -4,7 +4,7 @@ set papersize a4
 set preamble "\usepackage{amsmath}"
 set axis x arrow nomirrored
 set axis y arrow nomirrored
-set xformat "%.3f"%(x)
+set xformat "%.0f"%(x)
 
 set grid
 
