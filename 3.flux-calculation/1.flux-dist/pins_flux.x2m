@@ -4,7 +4,7 @@
 * Grupo Argentino de Cálculo y Análisis de Reactores
 * III Reunión Anual
 *
-* File desc.: Geometry definition and Ray tracing
+* File desc.: Flux calculation
 * Ramiro Vignolo    <rvignolo@tecna.com>
 *                   <ramirovignolo@gmail.com>
 *------------+--------------+-------+------+-----++----+++---++++--+++++
@@ -163,26 +163,15 @@ Geom_G3 := GEO: :: CAR2D 4 4
       NPIN  1 RPIN 0.0 APIN 0.785398163397 ;
     ;
   ;
-*
-*----
-* Geometries representations
-*----
-Surfil GeoMix_G1 := G2S: Geom_G1 ::
-  DRAWMIX
-!   DRAWNOD
-  ;
-*
-GeoMix_G2 := PSP: Geom_G2 ::
-  TYPE MIXTURE
-  ;
-*
-GeoMix_G3 := PSP: Geom_G3 ::
-  TYPE MIXTURE
-  ;
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 * TRACKING (uncomment in order to plot the ray tracing tracks)
+*
+Surfil GeoMix_G1 := G2S: Geom_G1 ::
+  DRAWMIX
+!   DRAWNOD
+  ;
 *
 Track Lines := SALT: Surfil ::
   EDIT 2
@@ -236,6 +225,10 @@ Lines Track := NXT: Geom_G2 ::
   TISO 24 40.0
   LONG
   ;
+*
+GeoMix_G2 := PSP: Track ::
+  TYPE MIXTURE
+  ;
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
@@ -271,6 +264,10 @@ Lines Track := NXT: Geom_G3 ::
   EDIT 2
   TISO 24 40.0
   LONG
+  ;
+*
+GeoMix_G3 := PSP: Track ::
+  TYPE MIXTURE
   ;
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *

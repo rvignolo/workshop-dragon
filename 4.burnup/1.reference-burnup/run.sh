@@ -6,7 +6,7 @@
 # Grupo Argentino de Cálculo y Análisis de Reactores
 # III Reunión Anual
 #
-# File desc.: Macroscopic XS reading with DRAGON
+# File desc.: Geometry definition and Ray tracing
 # Ramiro Vignolo    <rvignolo@tecna.com>
 #                   <ramirovignolo@gmail.com>
 #------------+--------------+-------+------+-----++----+++---++++--+++++
@@ -26,6 +26,9 @@ done
 
 # lets find the dragon input
 input=`ls -la | grep *.x2m | awk '{print $9}'`
+
+# and the library
+ln -sf ../../1.materials/2.microscopic/WLUP
 
 # and generate an output file name
 output=`basename $input .x2m`

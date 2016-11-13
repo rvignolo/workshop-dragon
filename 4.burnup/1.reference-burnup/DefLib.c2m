@@ -1,0 +1,170 @@
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* DECK DefLib
+*
+*  Name          : DefLib.c2m
+*  Type          : DRAGON procedure
+*  Use           : Microlib generation
+*  Authors       : R. Vignolo
+*
+*  Procedure called as: 
+*
+*  MicLib := DefLib ::
+*    <<Library>> <<nmix>>
+*    <<nmix_cool>> <<nmix_tubo>> <<nmix_gap>> 
+*    <<nmix_foil>> <<nmix_mod>> <<nmix_clad>>
+*    <<nmix_fuel1>> <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>>
+*    <<trefr>> <<drefr>> <<ttubo>> <<tubo_dens>> <<tgap>>
+*    <<gap_dens>> <<tfoil>> <<tmod>> <<dmod>> <<tclad>> 
+*    <<clad_dens>> <<tfuel1>> <<tfuel2>> <<tfuel3>> <<tfuel4>>
+*    <<UO2_dens>>
+*    ;
+*
+*  Input data   :
+*    Library   : Library name, WLUP.
+*    nmix      : number of mixtures.
+*    nmix_cool : coolant mixture number.
+*    nmix_tubo : tubo mixture number.
+*    nmix_gap  : gap mixture number.
+*    nmix_foil : foil mixture number.
+*    nmix_mod  : mod mixture number.
+*    nmix_clad : clad mixture number.
+*    nmix_fuel1: fuel1 mixture number.
+*    nmix_fuel2: fuel2 mixture number.
+*    nmix_fuel3: fuel3 mixture number.
+*    nmix_fuel4: fuel4 mixture number.
+*    trefr     : Coolant temperature (K).
+*    drefr     : Coolant density (G/CC).
+*    ttubo     : Tubo temperature (K).
+*    tubo_dens : Tubo density (G/CC).
+*    tgap      : Gap temperature (K).
+*    gap_dens  : Gap density (G/CC).
+*    tfoil     : Foil temperature (K).
+*    tmod      : Moderator temperature (K).
+*    dmod      : Moderator density (G/CC).
+*    tclad     : Cladding temperature (K).
+*    cald_dens : Cladding density (G/CC).
+*    tfueli    : Fuel temperature (K) for the i fuel region 
+*                (i_max corresponds to the outer region).
+*    UO2_dens  : UO2 density (G/CC).
+*
+*  Output data:
+*    MicLib  : Microlib with SUBG option.
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+PARAMETER  MicLib  ::  
+       EDIT 0 
+           ::: LINKED_LIST MicLib  ; 
+   ;
+*
+* Modules used in this procedure
+MODULE
+  LIB: END: ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* INPUT DATA RECOVERY
+*
+STRING Library ;
+:: >>Library<< ;
+INTEGER nmix   ;
+::    >>nmix<< ;
+INTEGER   nmix_cool      nmix_tubo      nmix_gap 
+          nmix_foil      nmix_mod       nmix_clad 
+          nmix_fuel1     nmix_fuel2     nmix_fuel3     nmix_fuel4   ;
+::      >>nmix_cool<<  >>nmix_tubo<<  >>nmix_gap<< 
+        >>nmix_foil<<  >>nmix_mod<<   >>nmix_clad<<
+        >>nmix_fuel1<< >>nmix_fuel2<< >>nmix_fuel3<< >>nmix_fuel4<< ;
+REAL trefr      drefr      ttubo      tubo_dens     tgap      gap_dens     
+     tfoil      tmod       dmod       tclad         clad_dens
+     tfuel1     tfuel2     tfuel3     tfuel4        UO2_dens   ;
+:: >>trefr<<  >>drefr<<  >>ttubo<<  >>tubo_dens<< >>tgap<<  >>gap_dens<<
+   >>tfoil<<  >>tmod<<   >>dmod<<   >>tclad<<     >>clad_dens<<
+   >>tfuel1<< >>tfuel2<< >>tfuel3<< >>tfuel4<<    >>UO2_dens<< ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* MICLIB DECLARATION
+*
+MicLib := LIB: ::
+  EDIT 0
+  NMIX <<nmix>>
+  CTRA WIMS
+  SUBG
+  
+  DEPL LIB: WIMSD4 FIL: <<Library>>
+  MIXS LIB: WIMSD4 FIL: <<Library>>
+  MIX <<nmix_cool>> <<trefr>> <<drefr>> NOEV
+    O16    = '6016' 7.990010E+01
+    H1_H2O = '3001' 1.678300E-02
+    H2_D2O = '3002' 2.008310E+01
+    Li6    = '6'    1.973400E-06
+    Li7    = '7'    2.402660E-05
+    B11    = '1011' 5.000000E-06
+  MIX <<nmix_tubo>> <<ttubo>> <<tubo_dens>> NOEV
+    Zr91  = '91'    9.850000E+01
+    Fe56  = '2056'  2.000000E-01
+    Cr52  = '52'    1.000000E-01
+    Sn118 = '118'   1.400000E+00
+    O16   = '6016'  1.200000E-01
+  MIX <<nmix_gap>> <<tgap>> <<gap_dens>> NOEV
+    O16    = '6016' 7.990010E+01
+    H1_H2O = '3001' 1.678300E-02
+    H2_D2O = '3002' 2.008310E+01
+    Li6    = '6'    1.973400E-06
+    Li7    = '7'    2.402660E-05
+    B11    = '1011' 5.000000E-06
+  MIX <<nmix_foil>> <<tfoil>> <<tubo_dens>> NOEV
+    Zr91  = '91'    9.850000E+01
+    Fe56  = '2056'  2.000000E-01
+    Cr52  = '52'    1.000000E-01
+    Sn118 = '118'   1.400000E+00
+    O16   = '6016'  1.200000E-01
+  MIX <<nmix_mod>> <<tmod>> <<dmod>> NOEV
+    O16    = '6016' 7.990010E+01
+    H1_H2O = '3001' 1.678300E-02
+    H2_D2O = '3002' 2.008310E+01
+    Li6    = '6'    1.973400E-06
+    Li7    = '7'    2.402660E-05
+    B11    = '1011' 5.000000E-06
+  MIX <<nmix_clad>> <<tclad>> <<clad_dens>> NOEV
+    Zr91  = '91'    9.850000E+01
+    Fe56  = '2056'  2.000000E-01
+    Cr52  = '52'    1.000000E-01
+    Sn118 = '118'   1.400000E+00
+    O16   = '6016'  1.200000E-01
+  MIX <<nmix_fuel1>> <<tfuel1>>
+    U234  =  '234' 1.369643E-12 1 SHIB  '234.0'
+    U235  = '2235' 1.672692E-04 1 SHIB '2235.0'
+    Pu239 = '6239' 2.622746E-22 1 SHIB '6239.0'
+    U238  = '8238' 2.305021E-02 1 SHIB '8238.0'
+    O16   = '6016' 4.643773E-02
+    B11   = '1011' 6.544400E-08
+    Xe135 = '4135' 0.000000E+00 SAT ! NOEV
+  MIX <<nmix_fuel2>> <<tfuel2>>
+    U234  =  '234' 1.369643E-12 1 SHIB  '234.0'
+    U235  = '2235' 1.672692E-04 1 SHIB '2235.0'
+    Pu239 = '6239' 2.622746E-22 1 SHIB '6239.0'
+    U238  = '8238' 2.305021E-02 1 SHIB '8238.0'
+    O16   = '6016' 4.643773E-02
+    B11   = '1011' 6.544400E-08
+    Xe135 = '4135' 0.000000E+00 SAT ! NOEV
+  MIX <<nmix_fuel3>> <<tfuel3>>
+    U234  =  '234' 1.369643E-12 1 SHIB  '234.0'
+    U235  = '2235' 1.672692E-04 1 SHIB '2235.0'
+    Pu239 = '6239' 2.622746E-22 1 SHIB '6239.0'
+    U238  = '8238' 2.305021E-02 1 SHIB '8238.0'
+    O16   = '6016' 4.643773E-02
+    B11   = '1011' 6.544400E-08
+    Xe135 = '4135' 0.000000E+00 SAT ! NOEV
+  MIX <<nmix_fuel4>> <<tfuel4>>
+    U234  =  '234' 1.369643E-12 1 SHIB  '234.0'
+    U235  = '2235' 1.672692E-04 1 SHIB '2235.0'
+    Pu239 = '6239' 2.622746E-22 1 SHIB '6239.0'
+    U238  = '8238' 2.305021E-02 1 SHIB '8238.0'
+    O16   = '6016' 4.643773E-02
+    B11   = '1011' 6.544400E-08
+    Xe135 = '4135' 0.000000E+00 SAT ! NOEV
+  ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+END: ;
+QUIT .

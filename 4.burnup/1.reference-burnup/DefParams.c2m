@@ -1,0 +1,168 @@
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* DECK DefParams
+*
+*  Name          : DefParams.c2m
+*  Type          : DRAGON procedure
+*  Use           : Declaration for global parameters
+*  Authors       : R. Vignolo
+*
+*  Procedure called as: 
+*
+*  DefParams ::
+*    >>Library<<
+*    >>nmix<< >>nmix_cool<< >>nmix_tubo<< >>nmix_gap<<
+*    >>nmix_foil<< >>nmix_mod<< >>nmix_clad<< >>nmix_fuel1<< 
+*    >>nmix_fuel2<< >>nmix_fuel3<< >>nmix_fuel4<<
+*    >>trefr_0<< >>drefr_0<< >>ttubo<< >>tubo_dens<< >>tgap<< 
+*    >>gap_dens<< >>tfoil<< >>tmod_0<< >>dmod_0<< >>tclad_0<< 
+*    >>clad_dens<< >>tfuel1_0<< >>tfuel2_0<< >>tfuel3_0<< >>tfuel4_0<<
+*    >>UO2_dens<< >>grmin<< >>grmax<< >>hex_side<< >>r_fuel1<< 
+*    >>r_fuel2<< >>r_fuel3<< >>r_fuel4<< >>r_cladd<< >>r_mesh1<< 
+*    >>r_mesh2<< >>r_mesh3<< >>r_mesh4<< >>r_mesh5<< >>r_mesh6<< 
+*    >>r_tubo<< >>r_gap<< >>r_foil<< >>r_mod<< >>r_in_mod<< 
+*    >>q_lineal_0<< >>apower<< >>f_burnup<< >>nang<< >>track_dens<<
+*    >>vol_frac<<
+*    ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*  
+* Modules used in this procedure
+MODULE ABORT: END: ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* PARAMETER DEFINITIONS
+*
+*----
+* Library parameters.
+*----
+* Name
+STRING Library := "WLUP" ;
+* Mixture identifiers
+INTEGER nmix       := 10 ;
+INTEGER nmix_cool  :=  1 ;
+INTEGER nmix_tubo  :=  2 ;
+INTEGER nmix_gap   :=  3 ;
+INTEGER nmix_foil  :=  4 ;
+INTEGER nmix_mod   :=  5 ;
+INTEGER nmix_clad  :=  6 ;
+INTEGER nmix_fuel1 :=  7 ;
+INTEGER nmix_fuel2 :=  8 ;
+INTEGER nmix_fuel3 :=  9 ;
+INTEGER nmix_fuel4 := 10 ;
+* Nominal mixtures temperatures and densities:
+* Coolant temperature
+REAL trefr_0 := 569.9085 ;
+* Coolant density
+REAL drefr_0 := 0.8009 ;
+* Tubo temperature
+REAL ttubo := 558.15 ;
+* Tubo temperature
+REAL tubo_dens := 6.56 ;
+* Gap temperature
+REAL tgap := 519.15 ;
+* Gap density
+REAL gap_dens := 0.89914 ;
+* Foil temperature
+REAL tfoil := 485.15 ;
+* Moderator temperature
+REAL tmod_0 := 443.5859 ;
+* Moderator density
+REAL dmod_0  := 0.9994 ;
+* Cladding temperature
+REAL tclad_0 := 575.85 ;
+* Cladding density
+REAL clad_dens := 5.66473 ;
+* Anular fuel temperatures (perfil a q_lineal_0)
+REAL tfuel1_0 := 1042.80 ;
+REAL tfuel2_0 := 836.39 ;
+REAL tfuel3_0 := 718.44 ;
+REAL tfuel4_0 := 668.95 ;
+* Fuel UO2 density
+REAL UO2_dens := 10.41085 ;
+* Resonant groups limits
+INTEGER grmin := 15 ;
+INTEGER grmax := 27 ;
+*
+*----
+* Math parameters.
+*----
+REAL pi := 3.14159265358979323846 ;
+REAL cos_30 := 3.0 SQRT 2.0 / ;
+*
+*----
+* Geometry parameters.
+*----
+REAL pitch      := 27.2 ;
+REAL half_pitch := pitch 2.0 / ;
+REAL hex_side   := half_pitch cos_30 / ;
+*
+REAL n_pins := 37.0 ;
+REAL r_ext_pin := 0.57835 ;
+REAL r_fuel1 r_fuel2 r_fuel3 r_fuel4 r_cladd := 
+     0.39285 0.50724 0.57087 0.57835 0.64500 ;
+REAL r_mesh1 r_mesh2 r_mesh3 r_mesh4 r_mesh5 r_mesh6 :=
+     0.85729 1.54750 2.26816 3.01450 3.73682 4.48700 ;
+REAL r_tubo  r_gap  r_foil r_mod r_in_mod :=
+     5.4100  5.4965 5.8000 5.840 12.00000 ;
+*
+*----
+* Tracking parameters.
+*----
+INTEGER nang := 5 ;
+REAL track_dens := 5.0 ;
+*
+*----
+* Burnup parameters.
+*----
+REAL q_lineal_0 := 300.0 ; ! in W/cm
+REAL V_assmb    := 2.0 3.0 SQRT half_pitch half_pitch * * * ;
+REAL apower     := q_lineal_0 V_assmb / ;
+EVALUATE apower := n_pins apower * ;
+*
+* Fuel relative weight porcentage of each isotope
+REAL wU4  := 5.1127E-11 ;
+REAL wU5  := 0.00627070 ;
+REAL wU8  := 0.87517630 ;
+REAL wPu9 := 1.0000E-20 ;
+REAL wO16 := 0.11850200 ;
+REAL wB11 := 1.1300E-07 ;
+*
+REAL aux_sum := wU4 wU5 wU8 wPu9 wO16 wB11 + + + + + ;
+* Si es necesario, renormalizamos los valores
+IF aux_sum 1.0 - ABS 1E-10 > THEN
+  EVALUATE wU4  := wU4  aux_sum / ;
+  EVALUATE wU5  := wU5  aux_sum / ;
+  EVALUATE wU8  := wU8  aux_sum / ;
+  EVALUATE wPu9 := wPu9 aux_sum / ;
+  EVALUATE wO16 := wO16 aux_sum / ;
+  EVALUATE wB11 := wB11 aux_sum / ;
+ENDIF ;
+EVALUATE aux_sum := wU4 wU5 wU8 wPu9 + + + ;
+REAL fuel_dens := UO2_dens aux_sum * ;
+REAL fuel_vol := n_pins pi r_ext_pin r_ext_pin * * * ;
+REAL fuel_mass := fuel_dens fuel_vol * ;
+REAL D_g := fuel_mass V_assmb / ;
+*
+REAL F_power  := 1.0 ;
+REAL f_burnup := apower D_g / F_power / ;
+*
+REAL vol_frac := fuel_vol V_assmb / ;
+*
+:: <<Library>>
+   <<nmix>> <<nmix_cool>> <<nmix_tubo>> <<nmix_gap>>
+   <<nmix_foil>> <<nmix_mod>> <<nmix_clad>> <<nmix_fuel1>> 
+   <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>>
+   <<trefr_0>> <<drefr_0>> <<ttubo>> <<tubo_dens>> <<tgap>>
+   <<gap_dens>> <<tfoil>> <<tmod_0>> <<dmod_0>> <<tclad_0>> 
+   <<clad_dens>> <<tfuel1_0>> <<tfuel2_0>> <<tfuel3_0>> <<tfuel4_0>>
+   <<UO2_dens>> <<grmin>> <<grmax>> <<hex_side>> <<r_fuel1>>
+   <<r_fuel2>> <<r_fuel3>> <<r_fuel4>> <<r_cladd>> <<r_mesh1>> 
+   <<r_mesh2>> <<r_mesh3>> <<r_mesh4>> <<r_mesh5>> <<r_mesh6>> 
+   <<r_tubo>> <<r_gap>> <<r_foil>> <<r_mod>> <<r_in_mod>> 
+   <<q_lineal_0>> <<apower>> <<f_burnup>> <<nang>> <<track_dens>>
+   <<vol_frac>> ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+
+END: ;
+QUIT .

@@ -1,0 +1,131 @@
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* DECK DefGeos
+*
+*  Name          : DefGeos.c2m
+*  Type          : DRAGON procedure
+*  Use           : Geometries definitions
+*  Authors       : R. Vignolo
+*
+*  Procedure called as: 
+*
+*  GlobalGeo_S GlobalGeo_T := DefGeos :: 
+*    <<hex_side>> <<r_mesh1>> <<r_mesh2>> <<r_mesh3>> <<r_mesh4>>
+*    <<r_mesh5>> <<r_mesh6>> <<r_tubo>> <<r_gap>> <<r_foil>> 
+*    <<r_mod>> <<r_in_mod>> <<r_fuel1>> <<r_fuel2>> <<r_fuel3>>
+*    <<r_fuel4>> <<r_cladd>> <<nmix_cool>> <<nmix_tubo>> <<nmix_gap>>
+*    <<nmix_foil>> <<nmix_mod>> <<nmix_fuel1>> <<nmix_fuel2>>
+*    <<nmix_fuel3>> <<nmix_fuel4>> <<nmix_clad>>
+*    ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+PARAMETER  GlobalGeo_S GlobalGeo_T  ::  
+       EDIT 0 
+           ::: LINKED_LIST GlobalGeo_S GlobalGeo_T  ; 
+   ;
+*
+* Modules used in this procedure
+MODULE
+  GEO: END: ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* INPUT DATA RECOVERY
+*
+REAL hex_side      r_mesh1      r_mesh2       r_mesh3       r_mesh4  
+     r_mesh5       r_mesh6      r_tubo        r_gap         r_foil   
+     r_mod         r_in_mod     r_fuel1       r_fuel2       r_fuel3
+     r_fuel4       r_cladd   ;
+:: >>hex_side<<  >>r_mesh1<<  >>r_mesh2<<   >>r_mesh3<<   >>r_mesh4<<
+   >>r_mesh5<<   >>r_mesh6<<  >>r_tubo<<    >>r_gap<<     >>r_foil<< 
+   >>r_mod<<     >>r_in_mod<< >>r_fuel1<<   >>r_fuel2<<   >>r_fuel3<<
+   >>r_fuel4<<   >>r_cladd<< ;
+INTEGER nmix_cool      nmix_tubo      nmix_gap  
+        nmix_foil      nmix_mod       nmix_fuel1   
+        nmix_fuel2     nmix_fuel3     nmix_fuel4     nmix_clad   ;
+::    >>nmix_cool<<  >>nmix_tubo<<  >>nmix_gap<<
+      >>nmix_foil<<  >>nmix_mod<<   >>nmix_fuel1<< 
+      >>nmix_fuel2<< >>nmix_fuel3<< >>nmix_fuel4<< >>nmix_clad<< ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+REAL pi := 3.14159265358979323846 ;
+REAL pi_12 := pi 12.0 / ;
+*
+*----
+* For Self-Shielding
+*----
+GlobalGeo_S := GEO: :: HEXCEL 5
+  HBC COMPLETE REFL
+  SIDE <<hex_side>>
+  RADIUS   0.0000
+         <<r_tubo>> 
+         <<r_gap>>
+         <<r_foil>>
+         <<r_mod>>
+         <<r_in_mod>>
+  MIX <<nmix_cool>> <<nmix_tubo>> <<nmix_gap>> <<nmix_foil>>
+      <<nmix_mod>>  <<nmix_mod>>
+  CLUSTER CORONA_1 CORONA_2 CORONA_3 CORONA_4
+  ::: CORONA_1 := GEO: TUBE 5 
+    RADIUS   0.00000
+           <<r_fuel1>>
+           <<r_fuel2>>
+           <<r_fuel3>>
+           <<r_fuel4>>
+           <<r_cladd>>
+    MIX <<nmix_fuel1>> <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>>
+        <<nmix_clad>>
+    NPIN  1 RPIN   0.00000   APIN 0.000000 ;
+  ::: CORONA_2 := GEO: CORONA_1
+    NPIN  6 RPIN <<r_mesh2>> APIN 0.000000 ;
+  ::: CORONA_3 := GEO: CORONA_1
+    NPIN 12 RPIN <<r_mesh4>> APIN <<pi_12>> ;
+  ::: CORONA_4 := GEO: CORONA_1
+    NPIN 18 RPIN <<r_mesh6>> APIN 0.000000 ;
+  ;
+*
+*----
+* For Transport
+*----
+GlobalGeo_T := GEO: :: HEXCEL 11
+  HBC COMPLETE REFL
+  SIDE <<hex_side>>
+  RADIUS   0.00000
+         <<r_mesh1>> 
+         <<r_mesh2>> 
+         <<r_mesh3>> 
+         <<r_mesh4>> 
+         <<r_mesh5>> 
+         <<r_mesh6>>
+         <<r_tubo>> 
+         <<r_gap>>
+         <<r_foil>>
+         <<r_mod>>
+         <<r_in_mod>>
+  MIX <<nmix_cool>> <<nmix_cool>> <<nmix_cool>> <<nmix_cool>> 
+      <<nmix_cool>> <<nmix_cool>> <<nmix_cool>> <<nmix_tubo>> 
+      <<nmix_gap>>  <<nmix_foil>> <<nmix_mod>>  <<nmix_mod>>
+  SPLITR 1 1 1 1 1 1 1 1 1 1 20
+  CLUSTER CORONA_1 CORONA_2 CORONA_3 CORONA_4
+  ::: CORONA_1 := GEO: TUBE 5 
+    RADIUS   0.00000
+           <<r_fuel1>>
+           <<r_fuel2>>
+           <<r_fuel3>>
+           <<r_fuel4>>
+           <<r_cladd>>
+    MIX <<nmix_fuel1>> <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>>
+        <<nmix_clad>>
+    NPIN  1 RPIN   0.00000   APIN 0.000000 ;
+  ::: CORONA_2 := GEO: CORONA_1
+    NPIN  6 RPIN <<r_mesh2>> APIN 0.000000 ;
+  ::: CORONA_3 := GEO: CORONA_1
+    NPIN 12 RPIN <<r_mesh4>> APIN <<pi_12>> ;
+  ::: CORONA_4 := GEO: CORONA_1
+    NPIN 18 RPIN <<r_mesh6>> APIN 0.000000 ;
+  ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+
+END: ;
+QUIT .

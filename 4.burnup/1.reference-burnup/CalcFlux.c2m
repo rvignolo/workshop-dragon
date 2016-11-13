@@ -1,0 +1,120 @@
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* DECK CalcFlux
+*
+*  Name          : CalcFlux.c2m
+*  Type          : DRAGON procedure
+*  Use           : Flux calculation
+*  Authors       : R. Vignolo
+*
+*  Procedure called as: 
+*
+*  MicLib_S Flux := CalcFlux MicLib ExcTrack_S Lines_S 
+*    ExcTrack_T Lines_T :: 
+*  <<burn_step>>
+*  <<bu_f>> <<next_bu_SS>>
+*  <<grmin>> <<grmax>>
+*  >>Kinf<<
+*  ;
+*
+*  Input data   :
+*    MicLib_S  :
+*    Flux      :
+*    MicLib    :
+*    ExcTrack_S:
+*    Lines_S   :
+*    ExcTrack_T:
+*    Lines_T   :
+*    burn_step :
+*    bu_f      :
+*    next_bu_SS:
+*    grmin     :
+*    grmax     :
+*
+*  Output data:
+*    MicLib_S:
+*    Flux    :
+*    Kinf    :
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+PARAMETER MicLib_S Flux MicLib ExcTrack_S Lines_S ExcTrack_T Lines_T ::
+       EDIT 0 
+          ::: LINKED_LIST MicLib_S Flux MicLib ExcTrack_S ExcTrack_T ;
+          ::: SEQ_BINARY  Lines_S Lines_T ;
+   ;
+*
+* Modules used in this procedure
+MODULE
+  USS: ASM: FLU: GREP: DELETE: END: ;
+*
+LINKED_LIST Pij ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* INPUT DATA RECOVERY
+*
+INTEGER burn_step   ;
+::    >>burn_step<< ;
+REAL bu_f     next_bu_SS   ;
+:: >>bu_f<< >>next_bu_SS<< ;
+INTEGER grmin     grmax   ;
+::    >>grmin<< >>grmax<< ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* OUTPUT DATA
+REAL Kinf ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* FLUX CALCULATION
+*
+IF bu_f next_bu_SS - ABS 1E-5 < THEN
+  *----
+  * Self-Shielding
+  *----
+  ECHO 'Self-shielding calculation at burnup =' bu_f ;
+  IF burn_step 1 = THEN
+    MicLib_S := USS: MicLib ExcTrack_S Lines_S ::
+      EDIT 0
+      GRMIN <<grmin>>
+      GRMAX <<grmax>>
+      PASS 2            (*default*)
+      TRAN              (*default*)
+      ;
+  ELSE
+    MicLib_S := USS: MicLib MicLib_S ExcTrack_S Lines_S ::
+      EDIT 0
+      GRMIN <<grmin>>
+      GRMAX <<grmax>>
+      PASS 2            (*default*)
+      TRAN              (*default*)
+      ;
+  ENDIF ;
+ELSE
+  ECHO 'No self-shielding calculation at burnup =' bu_f ;
+ENDIF ;
+*
+Pij := ASM: MicLib_S ExcTrack_T Lines_T ::
+  EDIT 0
+  PIJ        (*default*)
+  PNOR HELI  (*default*)
+  ;
+*
+IF burn_step 1 = THEN
+  Flux := FLU: Pij MicLib_S ExcTrack_T ::
+    EDIT 0
+    TYPE B  B1 BUCK 0.0
+    ;
+ELSE
+  Flux := FLU: Flux Pij MicLib_S ExcTrack_T ::
+    EDIT 0  
+    TYPE B  B1 BUCK 0.0
+    ;
+ENDIF ;
+*
+GREP: Flux :: GETVAL 'K-INFINITY  ' 1 1 1 >>Kinf<< ;
+*
+Pij := DELETE: Pij ;
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+:: <<Kinf>> ;
+*
+END: ;
+QUIT .
