@@ -1,0 +1,19 @@
+set style 1 ps 1. pt 1  lt 1 lw 3.5 color magenta
+set style 2 ps 1. pt 16  lt 1 lw 3.5 color midnightblue
+set style 3 ps 1. pt 16  lt 1 lw 3.5 color green
+set style 4 ps 1. pt 4  lt 1 lw 3.5 color cerulean
+set style 5 ps 1. pt 5  lt 1 lw 3.5 color black
+set style 6 ps 1. pt 6  lt 1 lw 3.5 color red
+set style 7 ps 1. pt 7  lt 1 lw 3.5 color orange
+set style 8 ps 1. pt 8  lt 1 lw 3.5 color brown
+set style 9 ps 1. pt 9  lt 1 lw 3.5 color violet
+set style 10 ps 1. pt 10  lt 1 lw 3.5 color yellow
+set style 11 ps 1. pt 11  lt 1 lw 3.5 color purple
+set style 12 ps 1. pt 12  lt 1 lw 3.5 color maroon
+set style 13 ps 1. pt 13  lt 1 lw 3.5 color greenyellow
+set style 14 ps 1. pt 14  lt 1 lw 3.5 color peach
+
+
+#set style 10 ps 0.7 pt 16  lt 6 lw 1.5 color magenta
+#set style 20 ps 0.7 pt 17  lt 6 lw 1.5 color midnightblue
+#set style 30 ps 0.7 pt 18  lt 6 lw 1.5 color green

@@ -5,3 +5,8 @@ syntax: glob
 *.ps
 *.m
 *.sur
+*.l2m
+*.o2m
+*.dat
+*.o
+*.pdf

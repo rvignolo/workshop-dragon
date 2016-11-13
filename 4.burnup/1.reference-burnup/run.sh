@@ -48,3 +48,12 @@ if [ $plot = 1 ]; then
     gv $i &
   done
 fi
+
+# compilamos rutina de C usando GanLib
+./compile.sh
+
+# generamos las XS
+./ref-burnup Database.dat
+
+# y las dibujamos
+./xs-plot.sh

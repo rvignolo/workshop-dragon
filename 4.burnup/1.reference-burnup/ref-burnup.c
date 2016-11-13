@@ -1,9 +1,13 @@
-/*
- *  dragon data extractor routines
- *
- *  Input: Multicompo structure in ASCII.
- *
- *  R. Vignolo 
+/*------------ -------------- -------- --- ----- ---   --       -            -
+ *  TALLER
+ *  Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
+ *  Grupo Argentino de Cálculo y Análisis de Reactores
+ *  III Reunión Anual
+ *  
+ *  File desc.: XS extractor
+ *  Ramiro Vignolo    <rvignolo@tecna.com>
+ *                    <ramirovignolo@gmail.com>
+ *------------------- ------------  ----    --------  --     -       -         -
  */
 
 #include <stdio.h>
