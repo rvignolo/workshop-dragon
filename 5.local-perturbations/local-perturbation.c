@@ -20,7 +20,6 @@
 int main(int argc, char **argv) {
   
   int i, nbu, npth;
-  double dens_fact;
   
   FILE *input, *output;
   
@@ -93,15 +92,7 @@ int main(int argc, char **argv) {
     lcmget_c(&mac_res,"NUSIGF",(int_32 *)nuSigmaF);
     lcmget_c(&mac_res,"H-FACTOR",(int_32 *)eSigmaF);
     
-    // si el pth es una densidad, la del agua nunca sera mayor a 2.
-    // si es una temperatura, mantenemos el factor en 1.
-    if (pth[npth] < 2.0) {
-      dens_fact = 1000.0;
-    } else {
-      dens_fact = 1.0;
-    }
-    
-    fprintf(output,"%.2e\t%e\t", burnup[nbu], pth[npth]*dens_fact);
+    fprintf(output,"%.2e\t%e\t", burnup[nbu], pth[npth]);
     fprintf(output,"%e\t%e\t", 1.0/(3.0*Strd[0]), 1.0/(3.0*Strd[1]));
     fprintf(output,"%e\t", SigmaC[0]+SigmaF[0]);
     fprintf(output,"%e\t%e\t", SigmaS[3], SigmaS[0]);

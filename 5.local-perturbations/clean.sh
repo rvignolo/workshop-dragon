@@ -11,4 +11,4 @@ rm -f Database.dat
 rm -f local-perturbation.o local-perturbation
 # y el resultado no lo elimino
 # rm -f *.result
-# rm -f xs.dat
+# rm -f xs-local-perturbation.dat
