@@ -15,25 +15,6 @@
 *  <<grmin>> <<grmax>>
 *  >>Kinf<<
 *  ;
-*
-*  Input data   :
-*    MicLib_S  :
-*    Flux      :
-*    MicLib    :
-*    ExcTrack_S:
-*    Lines_S   :
-*    ExcTrack_T:
-*    Lines_T   :
-*    burn_step :
-*    bu_f      :
-*    next_bu_SS:
-*    grmin     :
-*    grmax     :
-*
-*  Output data:
-*    MicLib_S:
-*    Flux    :
-*    Kinf    :
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *
 PARAMETER MicLib_S Flux MicLib ExcTrack_S Lines_S ExcTrack_T Lines_T ::
