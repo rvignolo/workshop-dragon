@@ -1,0 +1,124 @@
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* TALLER
+* Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
+* Grupo Argentino de Cálculo y Análisis de Reactores
+* III Reunión Anual
+*
+* File desc.: MicLib declaration
+* Ramiro Vignolo    <rvignolo@tecna.com>
+*                   <ramirovignolo@gmail.com>
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* DECLARATIONS
+*
+LINKED_LIST 
+            MicLib ;
+*
+MODULE
+  LIB: END: ;
+*
+*----
+* Library parameters.
+*----
+STRING Library := "WLUP" ;
+INTEGER nmix := 10 ;
+INTEGER nmix_cool  nmix_tubo  nmix_gap 
+        nmix_foil  nmix_mod   nmix_clad 
+        nmix_fuel1 nmix_fuel2 nmix_fuel3 nmix_fuel4 := 
+        1 2 3 4 5 6 7 8 9 10 ;
+REAL trefr    drefr    ttubo  tubo_dens tgap      gap_dens     
+     tfoil    tmod     dmod   tclad     clad_dens
+     tfuel1   tfuel2   tfuel3 tfuel4    UO2_dens  := 
+     569.9085 0.800900 558.15 6.5600    519.150   0.89914
+     485.1500 443.5859 0.9994 575.85    5.66473
+     1042.80  836.39   718.44 668.95   10.41085 ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+* MICLIB DECLARATION
+*
+MicLib := LIB: ::
+  EDIT 3
+  NMIX <<nmix>>
+  CTRA WIMS
+  SUBG
+  
+  DEPL LIB: WIMSD4 FIL: <<Library>>
+  MIXS LIB: WIMSD4 FIL: <<Library>>
+  MIX <<nmix_cool>> <<trefr>> <<drefr>> NOEV
+    O16    = '6016' 7.990010E+01
+    H1_H2O = '3001' 1.678300E-02
+    H2_D2O = '3002' 2.008310E+01
+    Li6    = '6'    1.973400E-06
+    Li7    = '7'    2.402660E-05
+    B11    = '1011' 5.000000E-06
+  MIX <<nmix_tubo>> <<ttubo>> <<tubo_dens>> NOEV
+    Zr91  = '91'    9.850000E+01
+    Fe56  = '2056'  2.000000E-01
+    Cr52  = '52'    1.000000E-01
+    Sn118 = '118'   1.400000E+00
+    O16   = '6016'  1.200000E-01
+  MIX <<nmix_gap>> <<tgap>> <<gap_dens>> NOEV
+    O16    = '6016' 7.990010E+01
+    H1_H2O = '3001' 1.678300E-02
+    H2_D2O = '3002' 2.008310E+01
+    Li6    = '6'    1.973400E-06
+    Li7    = '7'    2.402660E-05
+    B11    = '1011' 5.000000E-06
+  MIX <<nmix_foil>> <<tfoil>> <<tubo_dens>> NOEV
+    Zr91  = '91'    9.850000E+01
+    Fe56  = '2056'  2.000000E-01
+    Cr52  = '52'    1.000000E-01
+    Sn118 = '118'   1.400000E+00
+    O16   = '6016'  1.200000E-01
+  MIX <<nmix_mod>> <<tmod>> <<dmod>> NOEV
+    O16    = '6016' 7.990010E+01
+    H1_H2O = '3001' 1.678300E-02
+    H2_D2O = '3002' 2.008310E+01
+    Li6    = '6'    1.973400E-06
+    Li7    = '7'    2.402660E-05
+    B11    = '1011' 5.000000E-06
+  MIX <<nmix_clad>> <<tclad>> <<clad_dens>> NOEV
+    Zr91  = '91'    9.850000E+01
+    Fe56  = '2056'  2.000000E-01
+    Cr52  = '52'    1.000000E-01
+    Sn118 = '118'   1.400000E+00
+    O16   = '6016'  1.200000E-01
+  MIX <<nmix_fuel1>> <<tfuel1>>
+    U234  =  '234' 1.369643E-12 1 SHIB  '234.0'
+    U235  = '2235' 1.672692E-04 1 SHIB '2235.0'
+    Pu239 = '6239' 2.622746E-22 1 SHIB '6239.0'
+    U238  = '8238' 2.305021E-02 1 SHIB '8238.0'
+    O16   = '6016' 4.643773E-02
+    B11   = '1011' 6.544400E-08
+    Xe135 = '4135' 0.000000E+00 NOEV ! SAT
+  MIX <<nmix_fuel2>> <<tfuel2>>
+    U234  =  '234' 1.369643E-12 1 SHIB  '234.0'
+    U235  = '2235' 1.672692E-04 1 SHIB '2235.0'
+    Pu239 = '6239' 2.622746E-22 1 SHIB '6239.0'
+    U238  = '8238' 2.305021E-02 1 SHIB '8238.0'
+    O16   = '6016' 4.643773E-02
+    B11   = '1011' 6.544400E-08
+    Xe135 = '4135' 0.000000E+00 NOEV ! SAT
+  MIX <<nmix_fuel3>> <<tfuel3>>
+    U234  =  '234' 1.369643E-12 1 SHIB  '234.0'
+    U235  = '2235' 1.672692E-04 1 SHIB '2235.0'
+    Pu239 = '6239' 2.622746E-22 1 SHIB '6239.0'
+    U238  = '8238' 2.305021E-02 1 SHIB '8238.0'
+    O16   = '6016' 4.643773E-02
+    B11   = '1011' 6.544400E-08
+    Xe135 = '4135' 0.000000E+00 NOEV ! SAT
+  MIX <<nmix_fuel4>> <<tfuel4>>
+    U234  =  '234' 1.369643E-12 1 SHIB  '234.0'
+    U235  = '2235' 1.672692E-04 1 SHIB '2235.0'
+    Pu239 = '6239' 2.622746E-22 1 SHIB '6239.0'
+    U238  = '8238' 2.305021E-02 1 SHIB '8238.0'
+    O16   = '6016' 4.643773E-02
+    B11   = '1011' 6.544400E-08
+    Xe135 = '4135' 0.000000E+00 NOEV ! SAT
+  ;
+*------------+--------------+-------+------+-----++----+++---++++--+++++
+*
+END: ;
+QUIT .
