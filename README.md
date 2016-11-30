@@ -24,7 +24,7 @@ DRAGON contiene una serie de modelos que permiten simular el comportamiento de l
 
 4. Es necesario tener instalado DRAGON globalmente y que pueda ser llamado a partir del comando `dragon`. Puede descargarlo desde el servidor [Merlin](http://www.polymtl.ca/merlin/version5.htm).
 
-5. En la sección de descargas se encuentran unas filminas que puede utilizar para acompañar la lectura del taller.
+5. En la sección de [descargas](https://bitbucket.org/rvignolo/taller-dragon-garcar-2016/downloads) se encuentran unas filminas que puede utilizar para acompañar la lectura del taller.
 
 ## Descripción de archivos
 
