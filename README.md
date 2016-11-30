@@ -24,6 +24,8 @@ DRAGON contiene una serie de modelos que permiten simular el comportamiento de l
 
 4. Es necesario tener instalado DRAGON globalmente y que pueda ser llamado a partir del comando `dragon`. Puede descargarlo desde el servidor [Merlin](http://www.polymtl.ca/merlin/version5.htm).
 
+5. En la sección de descargas se encuentran unas filminas que puede utilizar para acompañar la lectura del taller.
+
 ## Descripción de archivos
 
 Los directorios numerados del `1.` al `5.` contienen la totalidad de la parte práctica del taller, que incluye las entradas de DRAGON y scripts. En el caso genérico, un directorio puede contener los siguientes archivos:
