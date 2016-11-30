@@ -58,27 +58,22 @@ Luego de la ejecución del *script* `run.sh` en cada uno de los directorios, en 
 Se explicarán brevemente y de forma individual cada directorio del
 taller.
 
-`1.materials` {#materials .unnumbered}
--------------
+### `1.materials`
 
 Este directorio contiene dos subdirectorios, `1.macroscopic` y `2.microscopic`, donde se especifica el formato de entrada para los módulos `MAC:` y `LIB:` respectivamente. Conviene prestar particular atención a, por ejemplo, el formato de las secciones eficaces de *scattering* y a los resultados de las corridas.
 
-`2.geometries-and-tracking` {#geometries-and-tracking .unnumbered}
----------------------------
+### `2.geometries-and-tracking`
 
 En este directorio se encuentran entradas que describen geometrías de diferentes tipos, a las que se les pueden aplicar diferentes módulos de *ray tracing*. Es importante analizar cada una de las geometrías y comprender tanto la definición de materiales como condiciones de contorno. Una vez entendido cada uno de estos casos, proponer una geometría y tratar de realizarla.
 
-`3.flux-calculation` {#flux-calculation .unnumbered}
---------------------
+### `3.flux-calculation`
 
 Se propone el cálculo de flujo en una misma geometría pero definida de diferentes maneras. Comparar los resultados y comprender el uso de las nuevas herramientas de DRAGON, como los módulos `G2S:` y `SALT:`.
 
-`4.reference-burnup` {#reference-burnup .unnumbered}
---------------------
+### `4.reference-burnup`
 
 El quemado de referencia es, justamente, una corrida que efectúa la evolución isotópica. La salida de esta corrida son las secciones eficaces en función del quemado. Lo importante es entender tanto el algoritmo utilizado para quemar como las herramientas empleadas para recopilar la información.
 
-`5.local-perturbations` {#local-perturbations .unnumbered}
------------------------
+### `5.local-perturbations`
 
 Las perturbaciones locales toman al quemado de referencia y lo recorren perturbando localmente algún parámetro. Esto permite obtener las secciones eficaces en función del quemado y de una perturbación local. Al post procesar estos valores pueden obtenerse, por ejemplo, las derivadas de las secciones eficaces respecto al parámetro local y en función del quemado.
