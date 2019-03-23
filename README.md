@@ -16,11 +16,11 @@ DRAGON contiene una serie de modelos que permiten simular el comportamiento de l
 
 ## Consideraciones generales
 
-1. El directorio `taller-dragon-garcar-2016/` contiene las principales carpetas del taller, con las entradas de DRAGON y algunos *scripts* ordenados en 5 directorios numerados del `1.` al `5.`. El orden de numeración respeta el orden de los temas a abordar en el taller.
+1. El directorio principal contiene diversas carpetas con las entradas de DRAGON y algunos *scripts* ordenados en 5 directorios numerados. La numeración respeta el orden en que serán abordados los temas del taller.
 
 2. Se recomienda tener instalado GhostView para visualizar PostScripts y gnuplot para realizar gráficos en 2 y 3 dimensiones. Sin embargo, si usted cuenta con pyxplot, los gráficos 2D serán realizados con este programa en lugar de gnuplot.
 
-3. Como editor de texto se recomienda el uso de Kate debido a que hemos escrito el [*syntax highlighting*](https://bitbucket.org/tenuc/dragon-xml) para DRAGON.
+3. Como editor de texto se recomienda el uso de Kate debido a que hemos escrito el [*syntax highlighting*](https://github.com/rvignolo/dragon-highlighting) para DRAGON.
 
 4. Es necesario tener instalado DRAGON globalmente y que pueda ser llamado a partir del comando `dragon`. Puede descargarlo desde el servidor [Merlin](http://www.polymtl.ca/merlin/version5.htm).
 
