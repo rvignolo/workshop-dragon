@@ -12,7 +12,16 @@
 
 ## Abstract
 
-DRAGON contains a series of models that enable the simulation of neutron behavior in a nuclear reactor fuel cell or fuel element. This code includes the main features of a cell code: interpolation of microscopic cross-sections obtained from libraries; self-shielding calculations in multidimensional geometries; multigroup and multidimensional neutron flux calculations; homogenization of nuclear properties for core calculations and isotopic depletion. In this workshop, participants will learn to use the DRAGON cell code in its fifth version, covering the different stages that constitute a generic input and performing various examples that reinforce the understanding of each of them. Finally, the use of external tools recommended by the developers as well as by the workshop instructors will be addressed.
+DRAGON contains a series of models that enable the simulation of neutron behavior in a
+nuclear reactor fuel cell or fuel element. This code includes the main features of a cell
+code: interpolation of microscopic cross-sections obtained from libraries; self-shielding
+calculations in multidimensional geometries; multigroup and multidimensional neutron flux
+calculations; homogenization of nuclear properties for core calculations and isotopic
+depletion. In this workshop, participants will learn to use the DRAGON cell code in its
+fifth version, covering the different stages that constitute a generic input and performing
+various examples that reinforce the understanding of each of them. Finally, the use of
+external tools recommended by the developers as well as by the workshop instructors will be
+addressed.
 
 ## Table of Contents
 
@@ -46,20 +55,13 @@ Before starting this workshop, ensure you have the following software installed:
 - **Gnuplot**: For 2D and 3D plotting
 - **Pyxplot**: Alternative to gnuplot for 2D plots (if available)
 - **Kate**: Text editor with [DRAGON syntax highlighting](https://github.com/rvignolo/dragon-highlighting)
-- **Matlab/Octave**: For analyzing `.m` files containing ray tracing data
-
-### System Requirements
-
-- Unix-like operating system (Linux, macOS, or WSL on Windows)
-- Minimum 4GB RAM
-- 2GB free disk space
 
 ## Installation
 
 1. **Clone this repository:**
 
    ```bash
-   git clone https://github.com/your-username/workshop-dragon.git
+   git clone https://github.com/rvignolo/workshop-dragon.git
    cd workshop-dragon
    ```
 
@@ -86,7 +88,8 @@ Before starting this workshop, ensure you have the following software installed:
 
 ## Workshop Structure
 
-The workshop is organized into 5 progressive modules, each building upon the previous knowledge:
+The workshop is organized into 5 progressive modules, each building upon the previous
+knowledge:
 
 ```
 workshop-dragon/
@@ -108,19 +111,30 @@ workshop-dragon/
 
 ## General Considerations
 
-1. The main directory contains various folders with DRAGON inputs and scripts organized in 5 numbered directories. The numbering respects the order in which the workshop topics will be addressed.
+1. The main directory contains various folders with DRAGON inputs and scripts organized in 5
+   numbered directories. The numbering respects the order in which the workshop topics will
+   be addressed.
 
-2. It is recommended to have GhostView installed for PostScript visualization and gnuplot for 2D and 3D plotting. However, if you have pyxplot available, 2D plots will be generated using this program instead of gnuplot.
+2. It is recommended to have GhostView installed for PostScript visualization and gnuplot
+   for 2D and 3D plotting. However, if you have pyxplot available, 2D plots will be
+   generated using this program instead of gnuplot.
 
-3. As a text editor, the use of Kate is recommended since we have written [syntax highlighting](https://github.com/rvignolo/dragon-highlighting) for DRAGON.
+3. As a text editor, the use of Kate is recommended since we have written [syntax
+   highlighting](https://github.com/rvignolo/dragon-highlighting) for DRAGON.
 
-4. It is necessary to have DRAGON installed globally and accessible via the `dragon` command. It can be downloaded from the [Merlin server](http://www.polymtl.ca/merlin/version5.htm).
+4. It is necessary to have DRAGON installed globally and accessible via the `dragon`
+   command. It can be downloaded from the [Merlin
+   server](http://www.polymtl.ca/merlin/version5.htm).
 
-5. In the [downloads section](https://bitbucket.org/rvignolo/taller-dragon-garcar-2016/downloads), you will find slides that can be used to accompany the workshop reading.
+5. In the [downloads
+   section](https://bitbucket.org/rvignolo/taller-dragon-garcar-2016/downloads), you will
+   find slides that can be used to accompany the workshop reading.
 
 ## File Description
 
-The numbered directories from `1.` to `5.` contain the complete practical part of the workshop, including DRAGON inputs and scripts. In the generic case, a directory may contain the following files:
+The numbered directories from `1.` to `5.` contain the complete practical part of the
+workshop, including DRAGON inputs and scripts. In the generic case, a directory may contain
+the following files:
 
 ### Input Files
 
@@ -129,20 +143,27 @@ The numbered directories from `1.` to `5.` contain the complete practical part o
 
 ### Scripts
 
-3. **`clean.sh`**: Cleans the information obtained after running an input (note that you can modify this script as needed)
-4. **`run.sh`**: Properly executes the DRAGON input. Additionally, if the `-g` option is given, it will display PostScript outputs in GhostView
-5. **`xs-plot.sh`**: Generates cross-section plots in gnuplot or pyxplot and in 2D and 3D as appropriate
+3. **`clean.sh`**: Cleans the information obtained after running an input (note that you can
+   modify this script as needed)
+4. **`run.sh`**: Properly executes the DRAGON input. Additionally, if the `-g` option is
+   given, it will display PostScript outputs in GhostView
+5. **`xs-plot.sh`**: Generates cross-section plots in gnuplot or pyxplot and in 2D and 3D as
+   appropriate
 6. **`compile.sh`**: Compiles C routines using GanLib libraries
 
 ### Output Files
 
-After executing the `run.sh` script in each directory, in the most general case, files of the following type will be obtained:
+After executing the `run.sh` script in each directory, in the most general case, files of
+the following type will be obtained:
 
 1. **`.result` files**: Contain the DRAGON output with calculation results
-2. **`.ps` files**: PostScript files with geometry plots showing region distribution, mixtures, or flux
+2. **`.ps` files**: PostScript files with geometry plots showing region distribution,
+   mixtures, or flux
 3. **`.m` files**: MATLAB/Octave files containing ray tracing information
-4. **`Database.dat`**: File generated by the `COMPO:` module of DRAGON and converted to ASCII
-5. **`.dat` files**: Cross-section information after processing `Database.dat` with C routines
+4. **`Database.dat`**: File generated by the `COMPO:` module of DRAGON and converted to
+   ASCII
+5. **`.dat` files**: Cross-section information after processing `Database.dat` with C
+   routines
 
 ## Directory Description
 
@@ -150,7 +171,10 @@ Each workshop directory will be briefly and individually explained.
 
 ### `1.materials`
 
-This directory contains two subdirectories, `1.macroscopic` and `2.microscopic`, where the input format for the `MAC:` and `LIB:` modules respectively is specified. Particular attention should be paid to, for example, the format of scattering cross-sections and the results of the runs.
+This directory contains two subdirectories, `1.macroscopic` and `2.microscopic`, where the
+input format for the `MAC:` and `LIB:` modules respectively is specified. Particular
+attention should be paid to, for example, the format of scattering cross-sections and the
+results of the runs.
 
 **Key Learning Objectives:**
 
@@ -161,7 +185,10 @@ This directory contains two subdirectories, `1.macroscopic` and `2.microscopic`,
 
 ### `2.geometries-and-tracking`
 
-This directory contains inputs that describe different types of geometries, to which different ray tracing modules can be applied. It is important to analyze each of the geometries and understand both material definitions and boundary conditions. Once each of these cases is understood, propose a geometry and try to implement it.
+This directory contains inputs that describe different types of geometries, to which
+different ray tracing modules can be applied. It is important to analyze each of the
+geometries and understand both material definitions and boundary conditions. Once each of
+these cases is understood, propose a geometry and try to implement it.
 
 **Key Learning Objectives:**
 
@@ -172,7 +199,9 @@ This directory contains inputs that describe different types of geometries, to w
 
 ### `3.flux-calculation`
 
-Flux calculation is proposed in the same geometry but defined in different ways. Compare the results and understand the use of DRAGON's new tools, such as the `G2S:` and `SALT:` modules.
+Flux calculation is proposed in the same geometry but defined in different ways. Compare the
+results and understand the use of DRAGON's new tools, such as the `G2S:` and `SALT:`
+modules.
 
 **Key Learning Objectives:**
 
@@ -183,7 +212,10 @@ Flux calculation is proposed in the same geometry but defined in different ways.
 
 ### `4.reference-burnup`
 
-The reference burnup is, precisely, a run that performs isotopic evolution. The output of this run consists of cross-sections as a function of burnup. The important aspects are understanding both the algorithm used for burning and the tools employed to collect the information.
+The reference burnup is, precisely, a run that performs isotopic evolution. The output of
+this run consists of cross-sections as a function of burnup. The important aspects are
+understanding both the algorithm used for burning and the tools employed to collect the
+information.
 
 **Key Learning Objectives:**
 
@@ -194,7 +226,10 @@ The reference burnup is, precisely, a run that performs isotopic evolution. The 
 
 ### `5.local-perturbations`
 
-Local perturbations take the reference burnup and traverse it while locally perturbing some parameter. This allows obtaining cross-sections as a function of burnup and a local perturbation. By post-processing these values, it is possible to obtain, for example, the derivatives of cross-sections with respect to the local parameter as a function of burnup.
+Local perturbations take the reference burnup and traverse it while locally perturbing some
+parameter. This allows obtaining cross-sections as a function of burnup and a local
+perturbation. By post-processing these values, it is possible to obtain, for example, the
+derivatives of cross-sections with respect to the local parameter as a function of burnup.
 
 **Key Learning Objectives:**
 
@@ -238,11 +273,15 @@ cd 4.reference-burnup
 
 ### DRAGON V5 Overview
 
-DRAGON (Deterministic Transport Analysis of Reactor Physics) is a deterministic neutron transport code developed at École Polytechnique de Montréal. Version 5 represents a significant advancement in nuclear reactor cell calculations, offering:
+DRAGON (Deterministic Transport Analysis of Reactor Physics) is a deterministic neutron
+transport code developed at École Polytechnique de Montréal. Version 5 represents a
+significant advancement in nuclear reactor cell calculations, offering:
 
 - **Advanced Geometry Modeling**: Support for complex 2D and 3D geometries
-- **Multiple Transport Methods**: Method of characteristics, collision probability, and discrete ordinates
-- **Comprehensive Cross-section Processing**: Self-shielding, resonance treatment, and temperature interpolation
+- **Multiple Transport Methods**: Method of characteristics, collision probability, and
+  discrete ordinates
+- **Comprehensive Cross-section Processing**: Self-shielding, resonance treatment, and
+  temperature interpolation
 - **Burnup Capabilities**: Isotopic evolution and depletion calculations
 - **Sensitivity Analysis**: Local and global perturbation methods
 
@@ -299,7 +338,8 @@ brew install gnuplot          # macOS
 
 ## Contributing
 
-This workshop material is part of the nuclear engineering community. If you find errors or have suggestions for improvements:
+This workshop material is part of the nuclear engineering community. If you find errors or
+have suggestions for improvements:
 
 1. Fork the repository
 2. Create a feature branch
@@ -314,8 +354,12 @@ Please ensure that:
 
 ## License
 
-This workshop material is provided for educational purposes. Please respect the original author's work and cite appropriately when using these materials in publications or presentations.
+This workshop material is provided for educational purposes. Please respect the original
+author's work and cite appropriately when using these materials in publications or
+presentations.
 
 ---
 
-**Note:** This workshop assumes basic knowledge of nuclear reactor physics and neutron transport theory. For additional background, refer to standard nuclear engineering textbooks and the DRAGON user manual.
+**Note:** This workshop assumes basic knowledge of nuclear reactor physics and neutron
+transport theory. For additional background, refer to standard nuclear engineering textbooks
+and the DRAGON user manual.
