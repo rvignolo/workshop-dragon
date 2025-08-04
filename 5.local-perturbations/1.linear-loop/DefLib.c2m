@@ -6,15 +6,15 @@
 *  Use           : Microlib generation
 *  Authors       : R. Vignolo
 *
-*  Procedure called as: 
+*  Procedure called as:
 *
 *  MicLib := DefLib ::
 *    <<Library>> <<nmix>>
-*    <<nmix_cool>> <<nmix_tubo>> <<nmix_gap>> 
+*    <<nmix_cool>> <<nmix_tube>> <<nmix_gap>>
 *    <<nmix_foil>> <<nmix_mod>> <<nmix_clad>>
 *    <<nmix_fuel1>> <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>>
-*    <<trefr>> <<drefr>> <<ttubo>> <<tubo_dens>> <<tgap>>
-*    <<gap_dens>> <<tfoil>> <<tmod>> <<dmod>> <<tclad>> 
+*    <<trefr>> <<drefr>> <<ttube>> <<tube_dens>> <<tgap>>
+*    <<gap_dens>> <<tfoil>> <<tmod>> <<dmod>> <<tclad>>
 *    <<clad_dens>> <<tfuel1>> <<tfuel2>> <<tfuel3>> <<tfuel4>>
 *    <<UO2_dens>>
 *    ;
@@ -23,7 +23,7 @@
 *    Library   : Library name, WLUP.
 *    nmix      : number of mixtures.
 *    nmix_cool : coolant mixture number.
-*    nmix_tubo : tubo mixture number.
+*    nmix_tube : tube mixture number.
 *    nmix_gap  : gap mixture number.
 *    nmix_foil : foil mixture number.
 *    nmix_mod  : mod mixture number.
@@ -34,8 +34,8 @@
 *    nmix_fuel4: fuel4 mixture number.
 *    trefr     : Coolant temperature (K).
 *    drefr     : Coolant density (G/CC).
-*    ttubo     : Tubo temperature (K).
-*    tubo_dens : Tubo density (G/CC).
+*    ttube     : Tube temperature (K).
+*    tube_dens : Tube density (G/CC).
 *    tgap      : Gap temperature (K).
 *    gap_dens  : Gap density (G/CC).
 *    tfoil     : Foil temperature (K).
@@ -43,7 +43,7 @@
 *    dmod      : Moderator density (G/CC).
 *    tclad     : Cladding temperature (K).
 *    cald_dens : Cladding density (G/CC).
-*    tfueli    : Fuel temperature (K) for the i fuel region 
+*    tfueli    : Fuel temperature (K) for the i fuel region
 *                (i_max corresponds to the outer region).
 *    UO2_dens  : UO2 density (G/CC).
 *
@@ -51,9 +51,9 @@
 *    MicLib  : Microlib with SUBG option.
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *
-PARAMETER  MicLib  ::  
-       EDIT 0 
-           ::: LINKED_LIST MicLib  ; 
+PARAMETER  MicLib  ::
+       EDIT 0
+           ::: LINKED_LIST MicLib  ;
    ;
 *
 * Modules used in this procedure
@@ -67,16 +67,16 @@ STRING Library ;
 :: >>Library<< ;
 INTEGER nmix   ;
 ::    >>nmix<< ;
-INTEGER   nmix_cool      nmix_tubo      nmix_gap 
-          nmix_foil      nmix_mod       nmix_clad 
+INTEGER   nmix_cool      nmix_tube      nmix_gap
+          nmix_foil      nmix_mod       nmix_clad
           nmix_fuel1     nmix_fuel2     nmix_fuel3     nmix_fuel4   ;
-::      >>nmix_cool<<  >>nmix_tubo<<  >>nmix_gap<< 
+::      >>nmix_cool<<  >>nmix_tube<<  >>nmix_gap<<
         >>nmix_foil<<  >>nmix_mod<<   >>nmix_clad<<
         >>nmix_fuel1<< >>nmix_fuel2<< >>nmix_fuel3<< >>nmix_fuel4<< ;
-REAL trefr      drefr      ttubo      tubo_dens     tgap      gap_dens     
+REAL trefr      drefr      ttube      tube_dens     tgap      gap_dens
      tfoil      tmod       dmod       tclad         clad_dens
      tfuel1     tfuel2     tfuel3     tfuel4        UO2_dens   ;
-:: >>trefr<<  >>drefr<<  >>ttubo<<  >>tubo_dens<< >>tgap<<  >>gap_dens<<
+:: >>trefr<<  >>drefr<<  >>ttube<<  >>tube_dens<< >>tgap<<  >>gap_dens<<
    >>tfoil<<  >>tmod<<   >>dmod<<   >>tclad<<     >>clad_dens<<
    >>tfuel1<< >>tfuel2<< >>tfuel3<< >>tfuel4<<    >>UO2_dens<< ;
 *------------+--------------+-------+------+-----++----+++---++++--+++++
@@ -89,7 +89,7 @@ MicLib := LIB: ::
   NMIX <<nmix>>
   CTRA WIMS
   SUBG
-  
+
   DEPL LIB: WIMSD4 FIL: <<Library>>
   MIXS LIB: WIMSD4 FIL: <<Library>>
   MIX <<nmix_cool>> <<trefr>> <<drefr>> NOEV
@@ -99,7 +99,7 @@ MicLib := LIB: ::
     Li6    = '6'    1.973400E-06
     Li7    = '7'    2.402660E-05
     B11    = '1011' 5.000000E-06
-  MIX <<nmix_tubo>> <<ttubo>> <<tubo_dens>> NOEV
+  MIX <<nmix_tube>> <<ttube>> <<tube_dens>> NOEV
     Zr91  = '91'    9.850000E+01
     Fe56  = '2056'  2.000000E-01
     Cr52  = '52'    1.000000E-01
@@ -112,7 +112,7 @@ MicLib := LIB: ::
     Li6    = '6'    1.973400E-06
     Li7    = '7'    2.402660E-05
     B11    = '1011' 5.000000E-06
-  MIX <<nmix_foil>> <<tfoil>> <<tubo_dens>> NOEV
+  MIX <<nmix_foil>> <<tfoil>> <<tube_dens>> NOEV
     Zr91  = '91'    9.850000E+01
     Fe56  = '2056'  2.000000E-01
     Cr52  = '52'    1.000000E-01

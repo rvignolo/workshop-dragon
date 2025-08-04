@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# si falló
+# if it fails
 rm -f _*
 rm -f *.o2m *.l2m
 rm -f *.ps
@@ -9,6 +9,6 @@ rm -f *.m
 rm -f *.sur
 rm -f Database.dat
 rm -f local-perturbation.o local-perturbation
-# y el resultado no lo elimino
+# and the result is not deleted
 # rm -f *.result
 # rm -f xs-local-perturbation.dat

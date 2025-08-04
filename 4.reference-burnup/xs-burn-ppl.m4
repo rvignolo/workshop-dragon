@@ -1,4 +1,4 @@
-#Tamanyo A4 apaisado.
+#A4 landscape.
 set width 22*unit(cm)
 set papersize a4
 set preamble "\usepackage{amsmath}"
@@ -13,7 +13,7 @@ load "styles.ppl"
 
 set xrange [* : *]
 set yrange [* : *]
-#set title ''
+# set title ''
 
 
 set terminal pdf
@@ -21,4 +21,3 @@ set output 'file.pdf'
 set ylabel 'coef'
 set xlabel 'BU [MWd/TnU]'
 plot "./xs.dat" u 1:index w lp style style1 ti 'coef'
-     

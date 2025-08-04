@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# si falló
+# if it fails
 rm -f _*
 rm -f *.o2m *.l2m
 rm -f *.ps
 rm -f Lines
 rm -f *.m
-# y el resultado no lo elimino
+# and the result is not deleted
 # rm -f *.result

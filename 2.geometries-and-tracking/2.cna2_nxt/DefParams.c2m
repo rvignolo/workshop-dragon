@@ -6,22 +6,22 @@
 *  Use           : Declaration of parameters
 *  Authors       : R. Vignolo
 *
-*  Procedure called as: 
+*  Procedure called as:
 *
-*  DefParams :: 
-*    >>hex_side<< >>r_fuel1<< >>r_fuel2<< >>r_fuel3<< >>r_fuel4<< 
-*    >>r_cladd<< >>r_mesh1<< >>r_mesh2<< >>r_mesh3<< >>r_mesh4<< 
-*    >>r_mesh5<< >>r_mesh6<< >>r_tubo<< >>r_gap<< >>r_foil<< 
-*    >>r_mod<< >>r_in_mod<< >>nmix_cool<< >>nmix_tubo<< >>nmix_gap<<
-*    >>nmix_foil<< >>nmix_mod<< >>nmix_clad<< >>nmix_fuel1<< 
+*  DefParams ::
+*    >>hex_side<< >>r_fuel1<< >>r_fuel2<< >>r_fuel3<< >>r_fuel4<<
+*    >>r_cladd<< >>r_mesh1<< >>r_mesh2<< >>r_mesh3<< >>r_mesh4<<
+*    >>r_mesh5<< >>r_mesh6<< >>r_tube<< >>r_gap<< >>r_foil<<
+*    >>r_mod<< >>r_in_mod<< >>nmix_cool<< >>nmix_tube<< >>nmix_gap<<
+*    >>nmix_foil<< >>nmix_mod<< >>nmix_clad<< >>nmix_fuel1<<
 *    >>nmix_fuel2<< >>nmix_fuel3<< >>nmix_fuel4<< >>pi_6<< >>pi_12<<
 *    >>pi_18<< >>nang<< >>track_dens<<
 *    ;
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
-*  
+*
 * Modules used in this procedure
-MODULE 
+MODULE
        END: ;
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
@@ -43,16 +43,16 @@ REAL pitch      := 27.2 ;
 REAL half_pitch := pitch 2.0 / ;
 REAL hex_side   := half_pitch cos_30 / ;
 *
-REAL r_fuel1 r_fuel2 r_fuel3 r_fuel4 r_cladd := 
+REAL r_fuel1 r_fuel2 r_fuel3 r_fuel4 r_cladd :=
      0.39285 0.50724 0.57087 0.57835 0.64500 ;
 REAL r_mesh1 r_mesh2 r_mesh3 r_mesh4 r_mesh5 r_mesh6 :=
      0.85729 1.54750 2.26816 3.01450 3.73682 4.48700 ;
-REAL r_tubo  r_gap  r_foil r_mod r_in_mod :=
+REAL r_tube  r_gap  r_foil r_mod r_in_mod :=
      5.4100  5.4965 5.8000 5.840 12.00000 ;
 *
 * Mixture identifiers
 INTEGER nmix_cool  :=  1 ;
-INTEGER nmix_tubo  :=  2 ;
+INTEGER nmix_tube  :=  2 ;
 INTEGER nmix_gap   :=  3 ;
 INTEGER nmix_foil  :=  4 ;
 INTEGER nmix_mod   :=  5 ;
@@ -72,10 +72,10 @@ REAL track_dens := 0.5 ;
 * Output parameters.
 *----
 :: <<hex_side>> <<r_fuel1>> <<r_fuel2>> <<r_fuel3>> <<r_fuel4>>
-   <<r_cladd>> <<r_mesh1>> <<r_mesh2>> <<r_mesh3>> <<r_mesh4>> 
-   <<r_mesh5>> <<r_mesh6>> <<r_tubo>> <<r_gap>> <<r_foil>> 
-   <<r_mod>> <<r_in_mod>> <<nmix_cool>> <<nmix_tubo>> <<nmix_gap>>
-   <<nmix_foil>> <<nmix_mod>> <<nmix_clad>> <<nmix_fuel1>> 
+   <<r_cladd>> <<r_mesh1>> <<r_mesh2>> <<r_mesh3>> <<r_mesh4>>
+   <<r_mesh5>> <<r_mesh6>> <<r_tube>> <<r_gap>> <<r_foil>>
+   <<r_mod>> <<r_in_mod>> <<nmix_cool>> <<nmix_tube>> <<nmix_gap>>
+   <<nmix_foil>> <<nmix_mod>> <<nmix_clad>> <<nmix_fuel1>>
    <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>> <<pi_6>> <<pi_12>>
    <<pi_18>> <<nang>> <<track_dens>>
    ;

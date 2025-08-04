@@ -1,14 +1,14 @@
 #!/bin/bash
 
 #------------+--------------+-------+------+-----++----+++---++++--+++++
-# TALLER
-# Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
-# Grupo Argentino de Cálculo y Análisis de Reactores
-# III Reunión Anual
+# Workshop
+# Learning DRAGON V5 as a production code for XSs
+# Argentinean Group of Calculation and Reactor Analysis
+# III Annual Meeting
 #
-# File desc.: Microscopic XS reading with DRAGON
-# Ramiro Vignolo    <rvignolo@tecna.com>
-#                   <ramirovignolo@gmail.com>
+# File desc.: Macroscopic XS reading with DRAGON V5
+# Ramiro Vignolo    <ramirovignolo@gmail.com>
+#
 #------------+--------------+-------+------+-----++----+++---++++--+++++
 
 # clean directory
@@ -18,7 +18,7 @@
 plot=0
 for opt in $*; do
   case $opt in
-    -g) 
+    -g)
         plot=1
         ;;
   esac

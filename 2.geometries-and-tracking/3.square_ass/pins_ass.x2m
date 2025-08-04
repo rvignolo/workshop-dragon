@@ -1,18 +1,18 @@
 *------------+--------------+-------+------+-----++----+++---++++--+++++
-* TALLER
-* Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
-* Grupo Argentino de Cálculo y Análisis de Reactores
-* III Reunión Anual
+* WORKSHOP
+* Learning DRAGON V5 as a production code for XSs
+* Argentinean Group of Calculation and Reactor Analysis
+* III Annual Meeting
 *
 * File desc.: Geometry definition and Ray tracing
-* Ramiro Vignolo    <rvignolo@tecna.com>
-*                   <ramirovignolo@gmail.com>
+* Ramiro Vignolo    <ramirovignolo@gmail.com>
+#
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 * DECLARATIONS
 *
-LINKED_LIST 
+LINKED_LIST
             Geom_G1
             Geom_G2
             Geom_G3
@@ -46,15 +46,15 @@ Geom_G1 := GEO: :: CAR2D 4 4
                  FUEL FUEL
                       FUEL
   ::: FUEL := GEO: CARCEL 2
-    MESHX  -0.8 0.8 
-    MESHY  -0.8 0.8 
+    MESHX  -0.8 0.8
+    MESHY  -0.8 0.8
     RADIUS  0.0 0.5 0.6
     MIX 1 2 3 ;
-  ::: POIS := GEO: FUEL 
+  ::: POIS := GEO: FUEL
     MIX 4 2 3 ;
   ;
 *
-Geom_G2 := GEO: :: CAR2D 4 4  
+Geom_G2 := GEO: :: CAR2D 4 4
   X- REFL X+ REFL Y- SSYM Y+ REFL
   CELL FUEL FUEL FUEL FUEL
        FUEL FUEL POIS FUEL
@@ -65,7 +65,7 @@ Geom_G2 := GEO: :: CAR2D 4 4
     MESHY  -0.8 0.8
     RADIUS  0.0 0.5 0.6
     MIX 1 2 3 ;
-  ::: POIS := GEO: FUEL 
+  ::: POIS := GEO: FUEL
     MIX 4 2 3 ;
   ;
 *
@@ -76,15 +76,15 @@ Geom_G3 := GEO: :: CAR2D 4 4
                  FUEL FUEL
                       FUEL
   ::: FUEL := GEO: CARCEL 2
-    MESHX  -0.8 0.8 
-    MESHY  -0.8 0.8 
+    MESHX  -0.8 0.8
+    MESHY  -0.8 0.8
     RADIUS  0.0 0.5 0.6
     MIX 1 2 3 ;
-  ::: POIS := GEO: FUEL 
+  ::: POIS := GEO: FUEL
     MIX 4 2 3 ;
   ;
 *
-Geom_G4 := GEO: :: CAR2D 4 4  
+Geom_G4 := GEO: :: CAR2D 4 4
   X- REFL X+ REFL Y- SYME Y+ REFL
   CELL FUEL FUEL FUEL FUEL
        FUEL FUEL POIS FUEL
@@ -95,11 +95,11 @@ Geom_G4 := GEO: :: CAR2D 4 4
     MESHY  -0.8 0.8
     RADIUS  0.0 0.5 0.6
     MIX 1 2 3 ;
-  ::: POIS := GEO: FUEL 
+  ::: POIS := GEO: FUEL
     MIX 4 2 3 ;
   ;
 *
-Geom_G5 := GEO: :: CAR2D 4 4  
+Geom_G5 := GEO: :: CAR2D 4 4
   X- DIAG X+ REFL Y- REFL Y+ DIAG
   CELL FUEL FUEL FUEL FUEL
             FUEL POIS FUEL
@@ -110,10 +110,10 @@ Geom_G5 := GEO: :: CAR2D 4 4
     MESHY  -0.8 0.8
     RADIUS  0.0 0.35336 0.4473 0.4874 0.5 0.6
     SECT 4 0
-    MIX 1 1 1 1 1 1 1 1 
-        1 1 1 1 1 1 1 1 
-        1 1 1 1 1 1 1 1 
-        1 1 1 1 1 1 1 1 
+    MIX 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1
         2 2 2 2 2 2 2 2
         3 3 3 3 3 3 3 3 3 3 3 3 ;
   ::: POIS := GEO: CARCEL 4

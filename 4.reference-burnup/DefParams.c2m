@@ -6,26 +6,26 @@
 *  Use           : Declaration for global parameters
 *  Authors       : R. Vignolo
 *
-*  Procedure called as: 
+*  Procedure called as:
 *
 *  DefParams ::
 *    >>Library<<
-*    >>nmix<< >>nmix_cool<< >>nmix_tubo<< >>nmix_gap<<
-*    >>nmix_foil<< >>nmix_mod<< >>nmix_clad<< >>nmix_fuel1<< 
+*    >>nmix<< >>nmix_cool<< >>nmix_tube<< >>nmix_gap<<
+*    >>nmix_foil<< >>nmix_mod<< >>nmix_clad<< >>nmix_fuel1<<
 *    >>nmix_fuel2<< >>nmix_fuel3<< >>nmix_fuel4<<
-*    >>trefr_0<< >>drefr_0<< >>ttubo<< >>tubo_dens<< >>tgap<< 
-*    >>gap_dens<< >>tfoil<< >>tmod_0<< >>dmod_0<< >>tclad_0<< 
+*    >>trefr_0<< >>drefr_0<< >>ttube<< >>tube_dens<< >>tgap<<
+*    >>gap_dens<< >>tfoil<< >>tmod_0<< >>dmod_0<< >>tclad_0<<
 *    >>clad_dens<< >>tfuel1_0<< >>tfuel2_0<< >>tfuel3_0<< >>tfuel4_0<<
-*    >>UO2_dens<< >>grmin<< >>grmax<< >>hex_side<< >>r_fuel1<< 
-*    >>r_fuel2<< >>r_fuel3<< >>r_fuel4<< >>r_cladd<< >>r_mesh1<< 
-*    >>r_mesh2<< >>r_mesh3<< >>r_mesh4<< >>r_mesh5<< >>r_mesh6<< 
-*    >>r_tubo<< >>r_gap<< >>r_foil<< >>r_mod<< >>r_in_mod<< 
+*    >>UO2_dens<< >>grmin<< >>grmax<< >>hex_side<< >>r_fuel1<<
+*    >>r_fuel2<< >>r_fuel3<< >>r_fuel4<< >>r_cladd<< >>r_mesh1<<
+*    >>r_mesh2<< >>r_mesh3<< >>r_mesh4<< >>r_mesh5<< >>r_mesh6<<
+*    >>r_tube<< >>r_gap<< >>r_foil<< >>r_mod<< >>r_in_mod<<
 *    >>q_lineal_0<< >>apower<< >>f_burnup<< >>nang<< >>track_dens<<
 *    >>vol_frac<<
 *    ;
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
-*  
+*
 * Modules used in this procedure
 MODULE ABORT: END: ;
 *
@@ -40,7 +40,7 @@ STRING Library := "WLUP" ;
 * Mixture identifiers
 INTEGER nmix       := 10 ;
 INTEGER nmix_cool  :=  1 ;
-INTEGER nmix_tubo  :=  2 ;
+INTEGER nmix_tube  :=  2 ;
 INTEGER nmix_gap   :=  3 ;
 INTEGER nmix_foil  :=  4 ;
 INTEGER nmix_mod   :=  5 ;
@@ -54,10 +54,10 @@ INTEGER nmix_fuel4 := 10 ;
 REAL trefr_0 := 569.9085 ;
 * Coolant density
 REAL drefr_0 := 0.8009 ;
-* Tubo temperature
-REAL ttubo := 558.15 ;
-* Tubo temperature
-REAL tubo_dens := 6.56 ;
+* Tube temperature
+REAL ttube := 558.15 ;
+* Tube temperature
+REAL tube_dens := 6.56 ;
 * Gap temperature
 REAL tgap := 519.15 ;
 * Gap density
@@ -98,11 +98,11 @@ REAL hex_side   := half_pitch cos_30 / ;
 *
 REAL n_pins := 37.0 ;
 REAL r_ext_pin := 0.57835 ;
-REAL r_fuel1 r_fuel2 r_fuel3 r_fuel4 r_cladd := 
+REAL r_fuel1 r_fuel2 r_fuel3 r_fuel4 r_cladd :=
      0.39285 0.50724 0.57087 0.57835 0.64500 ;
 REAL r_mesh1 r_mesh2 r_mesh3 r_mesh4 r_mesh5 r_mesh6 :=
      0.85729 1.54750 2.26816 3.01450 3.73682 4.48700 ;
-REAL r_tubo  r_gap  r_foil r_mod r_in_mod :=
+REAL r_tube  r_gap  r_foil r_mod r_in_mod :=
      5.4100  5.4965 5.8000 5.840 12.00000 ;
 *
 *----
@@ -149,16 +149,16 @@ REAL f_burnup := apower D_g / F_power / ;
 REAL vol_frac := fuel_vol V_assmb / ;
 *
 :: <<Library>>
-   <<nmix>> <<nmix_cool>> <<nmix_tubo>> <<nmix_gap>>
-   <<nmix_foil>> <<nmix_mod>> <<nmix_clad>> <<nmix_fuel1>> 
+   <<nmix>> <<nmix_cool>> <<nmix_tube>> <<nmix_gap>>
+   <<nmix_foil>> <<nmix_mod>> <<nmix_clad>> <<nmix_fuel1>>
    <<nmix_fuel2>> <<nmix_fuel3>> <<nmix_fuel4>>
-   <<trefr_0>> <<drefr_0>> <<ttubo>> <<tubo_dens>> <<tgap>>
-   <<gap_dens>> <<tfoil>> <<tmod_0>> <<dmod_0>> <<tclad_0>> 
+   <<trefr_0>> <<drefr_0>> <<ttube>> <<tube_dens>> <<tgap>>
+   <<gap_dens>> <<tfoil>> <<tmod_0>> <<dmod_0>> <<tclad_0>>
    <<clad_dens>> <<tfuel1_0>> <<tfuel2_0>> <<tfuel3_0>> <<tfuel4_0>>
    <<UO2_dens>> <<grmin>> <<grmax>> <<hex_side>> <<r_fuel1>>
-   <<r_fuel2>> <<r_fuel3>> <<r_fuel4>> <<r_cladd>> <<r_mesh1>> 
-   <<r_mesh2>> <<r_mesh3>> <<r_mesh4>> <<r_mesh5>> <<r_mesh6>> 
-   <<r_tubo>> <<r_gap>> <<r_foil>> <<r_mod>> <<r_in_mod>> 
+   <<r_fuel2>> <<r_fuel3>> <<r_fuel4>> <<r_cladd>> <<r_mesh1>>
+   <<r_mesh2>> <<r_mesh3>> <<r_mesh4>> <<r_mesh5>> <<r_mesh6>>
+   <<r_tube>> <<r_gap>> <<r_foil>> <<r_mod>> <<r_in_mod>>
    <<q_lineal_0>> <<apower>> <<f_burnup>> <<nang>> <<track_dens>>
    <<vol_frac>> ;
 *

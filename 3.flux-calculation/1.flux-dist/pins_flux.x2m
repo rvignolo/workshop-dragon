@@ -1,24 +1,24 @@
 *------------+--------------+-------+------+-----++----+++---++++--+++++
-* TALLER
-* Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
-* Grupo Argentino de Cálculo y Análisis de Reactores
-* III Reunión Anual
+* Workshop
+* Learning DRAGON V5 as a production code for XSs
+* Argentinean Group of Calculation and Reactor Analysis
+* III Annual Meeting
 *
 * File desc.: Flux calculation
-* Ramiro Vignolo    <rvignolo@tecna.com>
-*                   <ramirovignolo@gmail.com>
+* Ramiro Vignolo    <ramirovignolo@gmail.com>
+*
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 * DECLARATIONS
 *
-LINKED_LIST 
+LINKED_LIST
             MacLib
             Geom_G1
             Geom_G2
             Geom_G3
-            Track 
-            Pij 
+            Track
+            Pij
             Flux ;
 SEQ_BINARY  Lines ;
 SEQ_ASCII   GeoMix_G1    :: FILE './GeoMix_G1.ps'   ;
@@ -37,14 +37,14 @@ MODULE
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 * MACROSCOPIC XS DEFINITION
-MacLib := MAC: :: 
+MacLib := MAC: ::
   EDIT 2     (* print to output *)
   NGRO 2     (* number of groups *)
   NMIX 4     (* number of mixtures *)
   NIFI 1     (* max number of fissile spectrum for each mix *)
   READ INPUT (* read xs from imput *)
 *
-  MIX  1     (* data for mixture 1: fuel *) 
+  MIX  1     (* data for mixture 1: fuel *)
     TOTAL      3.62022E-1 5.72155E-1
     NUSIGF     1.86278E-2 3.44137E-1
     CHI        1.00000E-0 0.00000E-0
@@ -53,19 +53,19 @@ MacLib := MAC: ::
     SCAT   1 1 3.33748E-1
            2 2 3.80898E-1 6.64881E-4
 *
-  MIX  2     (* data for mixture 2: clad *) 
+  MIX  2     (* data for mixture 2: clad *)
     TOTAL      2.74144E-1 2.80890E-1
     (* for SCAT, read the manual :) *)
     SCAT   1 1 2.72377E-1
            2 2 2.77230E-1 1.90838E-4
 *
-  MIX  3     (* data for mixture 3: water *) 
+  MIX  3     (* data for mixture 3: water *)
     TOTAL      6.40711E-1 1.69131
     (* for SCAT, read the manual :) *)
     SCAT   1 1 6.07382E-1
            2 2 1.68428E-0 3.31316E-2
 *
-  MIX  4     (* data for mixture 4: fuel+gadolinio *) 
+  MIX  4     (* data for mixture 4: fuel+gadolinium *)
     TOTAL      3.71785E-1 1.75000E-0
     NUSIGF     1.79336E-2 1.57929E-1
     CHI        1.00000E-0 0.00000E-0
@@ -82,8 +82,8 @@ MacLib := MAC: ::
 *----
 * Geometries
 *----
-Geom_G1 := GEO: :: CAR2D 4 4  
-  X- DIAG X+ REFL 
+Geom_G1 := GEO: :: CAR2D 4 4
+  X- DIAG X+ REFL
   Y- REFL Y+ DIAG
   CELL FUEL FUEL FUEL FUEL
             FUEL POIS FUEL
@@ -94,10 +94,10 @@ Geom_G1 := GEO: :: CAR2D 4 4
     MESHY  -0.8 0.8
     RADIUS  0.0 0.35336 0.4473 0.4874 0.5 0.6
     SECT 4 0
-    MIX 1 1 1 1 1 1 1 1 
-        1 1 1 1 1 1 1 1 
-        1 1 1 1 1 1 1 1 
-        1 1 1 1 1 1 1 1 
+    MIX 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1
         2 2 2 2 2 2 2 2
         3 3 3 3 3 3 3 3 3 3 3 3 ;
   ::: POIS := GEO: CARCEL 5
@@ -114,7 +114,7 @@ Geom_G1 := GEO: :: CAR2D 4 4
   ;
 *
 Geom_G2 := GEO: :: CAR2D 4 4
-  X- DIAG X+ REFL 
+  X- DIAG X+ REFL
   Y- REFL Y+ DIAG
   CELL FUEL FUEL FUEL FUEL
             FUEL POIS FUEL
@@ -125,12 +125,12 @@ Geom_G2 := GEO: :: CAR2D 4 4
     MESHY  -0.8 0.8 SPLITY 5
     RADIUS  0.0 0.5 0.6 SPLITR 4 2
     MIX 1 2 3 ;
-  ::: POIS := GEO: FUEL 
+  ::: POIS := GEO: FUEL
     MIX 4 2 3 ;
   ;
 *
 Geom_G3 := GEO: :: CAR2D 4 4
-  X- DIAG X+ REFL 
+  X- DIAG X+ REFL
   Y- REFL Y+ DIAG
   CELL FUEL FUEL FUEL FUEL
             FUEL POIS FUEL
@@ -140,7 +140,7 @@ Geom_G3 := GEO: :: CAR2D 4 4
     MESHX  -0.8 0.8 SPLITX 5
     MESHY  -0.8 0.8 SPLITY 5
     MIX 3
-    CLUSTER PIN 
+    CLUSTER PIN
     ::: PIN := GEO: TUBE 5 2 2
       RADIUS  0.0 0.35336 0.4473 0.4874 0.5 0.6
       MIX 1 1 1 1 2
@@ -153,7 +153,7 @@ Geom_G3 := GEO: :: CAR2D 4 4
     MESHX  -0.8 0.8 SPLITX 5
     MESHY  -0.8 0.8 SPLITY 5
     MIX 3
-    CLUSTER PIN 
+    CLUSTER PIN
     ::: PIN := GEO: TUBE 5 2 2
       RADIUS  0.0 0.35336 0.4473 0.4874 0.5 0.6
       MIX 4 4 4 4 2
@@ -200,10 +200,10 @@ Pij := ASM: MacLib Track Lines ::
   ;
 *
 Flux := FLU: Pij MacLib Track ::
-  EDIT 3  
+  EDIT 3
   TYPE K
   ;
-* 
+*
 (* PSP: doesnt work with SALT: tracking *)
 ! GeoFlux_G1 := PSP: Track Flux ::
 !   TYPE FLUX
@@ -241,7 +241,7 @@ Pij := ASM: MacLib Track Lines ::
   ;
 *
 Flux := FLU: Pij MacLib Track ::
-  EDIT 3  
+  EDIT 3
   TYPE K
   ;
 *
@@ -281,7 +281,7 @@ Pij := ASM: MacLib Track Lines ::
   ;
 *
 Flux := FLU: Pij MacLib Track ::
-  EDIT 3  
+  EDIT 3
   TYPE K
   ;
 *

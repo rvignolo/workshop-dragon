@@ -1,19 +1,19 @@
 *------------+--------------+-------+------+-----++----+++---++++--+++++
-* TALLER
-* Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
-* Grupo Argentino de Cálculo y Análisis de Reactores
-* III Reunión Anual
+* Workshop
+* Learning DRAGON V5 as a production code for XSs
+* Argentinean Group of Calculation and Reactor Analysis
+* III Annual Meeting
 *
 * File desc.: Geometry definition for 2D hexagonal assembly
-* Adapted: R. Vignolo <rvignolo@tecna.com>
-*                     <ramirovignolo@gmail.com>
+* Adapted: R. Vignolo <ramirovignolo@gmail.com>
+*
 * (Some content of this file is taken from DRAGON manual pg. 232)
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 * DECLARATIONS
 *
-LINKED_LIST 
+LINKED_LIST
             Geom_G1
             Geom_G2
             Track ;
@@ -37,28 +37,28 @@ Geom_G1 := GEO: ::  HEX 7
   HBC COMPLETE REFL
   CELL C1 C2 C1 C2 C1 C2 C1
   ::: C1 := GEO: HEXT 4
-    SIDE 4.0 
-    MIX  
-    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
-    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
-    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
-    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
-    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
-    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
-    CLUSTER ROD1 ROD2 
+    SIDE 4.0
+    MIX
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+    CLUSTER ROD1 ROD2
     ::: ROD1 := GEO: TUBE 2 MIX 17 18 NPIN  1 RPIN 0.0000 APIN 0.0000
       RADIUS 0.00000 0.6122 0.6540 ;
     ::: ROD2 := GEO: ROD1   MIX 17 18 NPIN  6 RPIN 1.4885 APIN 0.0000 ;
     ;
   ::: C2 := GEO: HEXT 4
     SIDE 4.0 1.1
-    MIX  
-    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
-    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
-    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
-    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
-    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
-    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+    MIX
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
     ;
   ;
 *

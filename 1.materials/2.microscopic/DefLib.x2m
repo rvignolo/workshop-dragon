@@ -1,18 +1,18 @@
 *------------+--------------+-------+------+-----++----+++---++++--+++++
-* TALLER
-* Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
-* Grupo Argentino de Cálculo y Análisis de Reactores
-* III Reunión Anual
+* WORKSHOP
+* Learning DRAGON V5 as a production code for XSs
+* Argentinean Group of Calculation and Reactor Analysis
+* III Annual Meeting
 *
-* File desc.: MicLib declaration
-* Ramiro Vignolo    <rvignolo@tecna.com>
-*                   <ramirovignolo@gmail.com>
+* File desc.: Macroscopic XS reading with DRAGON V5
+* Ramiro Vignolo    <ramirovignolo@gmail.com>
+*
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 * DECLARATIONS
 *
-LINKED_LIST 
+LINKED_LIST
             MicLib ;
 *
 MODULE
@@ -23,13 +23,13 @@ MODULE
 *----
 STRING Library := "WLUP" ;
 INTEGER nmix := 10 ;
-INTEGER nmix_cool  nmix_tubo  nmix_gap 
-        nmix_foil  nmix_mod   nmix_clad 
-        nmix_fuel1 nmix_fuel2 nmix_fuel3 nmix_fuel4 := 
+INTEGER nmix_cool  nmix_tube  nmix_gap
+        nmix_foil  nmix_mod   nmix_clad
+        nmix_fuel1 nmix_fuel2 nmix_fuel3 nmix_fuel4 :=
         1 2 3 4 5 6 7 8 9 10 ;
-REAL trefr    drefr    ttubo  tubo_dens tgap      gap_dens     
+REAL trefr    drefr    ttube  tube_dens tgap      gap_dens
      tfoil    tmod     dmod   tclad     clad_dens
-     tfuel1   tfuel2   tfuel3 tfuel4    UO2_dens  := 
+     tfuel1   tfuel2   tfuel3 tfuel4    UO2_dens  :=
      569.9085 0.800900 558.15 6.5600    519.150   0.89914
      485.1500 443.5859 0.9994 575.85    5.66473
      1042.80  836.39   718.44 668.95   10.41085 ;
@@ -43,7 +43,7 @@ MicLib := LIB: ::
   NMIX <<nmix>>
   CTRA WIMS
   SUBG
-  
+
   DEPL LIB: WIMSD4 FIL: <<Library>>
   MIXS LIB: WIMSD4 FIL: <<Library>>
   MIX <<nmix_cool>> <<trefr>> <<drefr>> NOEV
@@ -53,7 +53,7 @@ MicLib := LIB: ::
     Li6    = '6'    1.973400E-06
     Li7    = '7'    2.402660E-05
     B11    = '1011' 5.000000E-06
-  MIX <<nmix_tubo>> <<ttubo>> <<tubo_dens>> NOEV
+  MIX <<nmix_tube>> <<ttube>> <<tube_dens>> NOEV
     Zr91  = '91'    9.850000E+01
     Fe56  = '2056'  2.000000E-01
     Cr52  = '52'    1.000000E-01
@@ -66,7 +66,7 @@ MicLib := LIB: ::
     Li6    = '6'    1.973400E-06
     Li7    = '7'    2.402660E-05
     B11    = '1011' 5.000000E-06
-  MIX <<nmix_foil>> <<tfoil>> <<tubo_dens>> NOEV
+  MIX <<nmix_foil>> <<tfoil>> <<tube_dens>> NOEV
     Zr91  = '91'    9.850000E+01
     Fe56  = '2056'  2.000000E-01
     Cr52  = '52'    1.000000E-01

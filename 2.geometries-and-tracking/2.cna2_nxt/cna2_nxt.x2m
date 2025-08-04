@@ -1,19 +1,19 @@
 *------------+--------------+-------+------+-----++----+++---++++--+++++
-* TALLER
-* Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
-* Grupo Argentino de Cálculo y Análisis de Reactores
-* III Reunión Anual
+* WORKSHOP
+* Learning DRAGON V5 as a production code for XSs
+* Argentinean Group of Calculation and Reactor Analysis
+* III Annual Meeting
 *
 * File desc.: Geometry definition and Ray tracing
-* Ramiro Vignolo    <rvignolo@tecna.com>
-*                   <ramirovignolo@gmail.com>
+* Ramiro Vignolo    <ramirovignolo@gmail.com>
+#
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 * DECLARATIONS
 *
-LINKED_LIST 
-            Geom 
+LINKED_LIST
+            Geom
             Track ;
 SEQ_BINARY  Lines ;
 SEQ_ASCII   GeoMix  :: FILE './GeoMix.ps' ;
@@ -33,18 +33,18 @@ PROCEDURE DefParams ;
 *----
 REAL hex_side r_fuel1 r_fuel2 r_fuel3 r_fuel4 r_cladd
      r_mesh1 r_mesh2 r_mesh3 r_mesh4 r_mesh5 r_mesh6
-     r_tubo  r_gap  r_foil r_mod r_in_mod pi_6 pi_12
+     r_tube  r_gap  r_foil r_mod r_in_mod pi_6 pi_12
      pi_18 track_dens ;
-INTEGER nmix_cool nmix_tubo nmix_gap nmix_foil nmix_mod 
-        nmix_clad nmix_fuel1 nmix_fuel2 nmix_fuel3 nmix_fuel4 
+INTEGER nmix_cool nmix_tube nmix_gap nmix_foil nmix_mod
+        nmix_clad nmix_fuel1 nmix_fuel2 nmix_fuel3 nmix_fuel4
         nang ;
 *
-DefParams :: 
-  >>hex_side<< >>r_fuel1<< >>r_fuel2<< >>r_fuel3<< >>r_fuel4<< 
-  >>r_cladd<< >>r_mesh1<< >>r_mesh2<< >>r_mesh3<< >>r_mesh4<< 
-  >>r_mesh5<< >>r_mesh6<< >>r_tubo<< >>r_gap<< >>r_foil<< 
-  >>r_mod<< >>r_in_mod<< >>nmix_cool<< >>nmix_tubo<< >>nmix_gap<<
-  >>nmix_foil<< >>nmix_mod<< >>nmix_clad<< >>nmix_fuel1<< 
+DefParams ::
+  >>hex_side<< >>r_fuel1<< >>r_fuel2<< >>r_fuel3<< >>r_fuel4<<
+  >>r_cladd<< >>r_mesh1<< >>r_mesh2<< >>r_mesh3<< >>r_mesh4<<
+  >>r_mesh5<< >>r_mesh6<< >>r_tube<< >>r_gap<< >>r_foil<<
+  >>r_mod<< >>r_in_mod<< >>nmix_cool<< >>nmix_tube<< >>nmix_gap<<
+  >>nmix_foil<< >>nmix_mod<< >>nmix_clad<< >>nmix_fuel1<<
   >>nmix_fuel2<< >>nmix_fuel3<< >>nmix_fuel4<< >>pi_6<< >>pi_12<<
   >>pi_18<< >>nang<< >>track_dens<<
   ;
@@ -58,19 +58,19 @@ Geom := GEO: :: HEXTCEL 11 1
   HBC COMPLETE REFL
   SIDE <<hex_side>>
   RADIUS   0.00000
-         <<r_mesh1>> 
-         <<r_mesh2>> 
-         <<r_mesh3>> 
-         <<r_mesh4>> 
-         <<r_mesh5>> 
+         <<r_mesh1>>
+         <<r_mesh2>>
+         <<r_mesh3>>
+         <<r_mesh4>>
+         <<r_mesh5>>
          <<r_mesh6>>
-         <<r_tubo>> 
+         <<r_tube>>
          <<r_gap>>
          <<r_foil>>
          <<r_mod>>
          <<r_in_mod>>
-  MIX <<nmix_cool>> <<nmix_cool>> <<nmix_cool>> <<nmix_cool>> 
-      <<nmix_cool>> <<nmix_cool>> <<nmix_cool>> <<nmix_tubo>> 
+  MIX <<nmix_cool>> <<nmix_cool>> <<nmix_cool>> <<nmix_cool>>
+      <<nmix_cool>> <<nmix_cool>> <<nmix_cool>> <<nmix_tube>>
       <<nmix_gap>>  <<nmix_foil>> <<nmix_mod>>  <<nmix_mod>>
   SPLITR 1 1 1 1 1 1 1 1 1 1 20
   CLUSTER CORONA_1 CORONA_2 CORONA_3 CORONA_4

@@ -1,81 +1,79 @@
-# Taller: Aprendiendo a utilizar DRAGON V5 como código de producción de secciones eficaces.
+# Workshop: Learning DRAGON V5 as a Production Code for Cross-Sections
 
-**Reunión:** III Reunión Anual del Grupo Argentino de Cálculo y Análisis de Reactores.
+**Meeting:** III Annual Meeting of the Argentinean Group of Calculation and Reactor Analysis.
 
-**Fecha:** 17 de Noviembre de 2016.
+**Date:** November 17, 2016.
 
-**Ubicación:** Sede Central de la Comisión Nacional de Energía Atómica.
+**Location:** Central Headquarters of the National Atomic Energy Commission.
 
-**Duración total:** 6 horas.
+**Total Duration:** 6 hours.
 
-**Responsable:** Ramiro Vignolo.
+**Instructor:** Ramiro Vignolo.
 
-## Resumen
+## Abstract
 
-DRAGON contiene una serie de modelos que permiten simular el comportamiento de los neutrones en una celda o elemento combustible de un reactor nuclear. Este código incluye las principales características de un código de celda: interpolación de secciones eficaces microscópicas obtenidas a partir de bibliotecas; cálculos de autoapantallamiento en geometrías multidimensionales; cálculos de flujo neutrónico multigrupo y multidimensional; homogeneización de propiedades nucleares para cálculos de núcleo y depleción isotópica. En este taller se aprenderá a utilizar el código de celda DRAGON en su quinta versión, atravesando las diferentes etapas que conforman una entrada genérica y realizando diferentes ejemplos que afiancen el entendimiento de cada una de ellas. Por último, se abordará tanto el uso de herramientas externas al programa y recomendadas por sus desarrolladores como así también por las personas a cargo del taller.
+DRAGON contains a series of models that enable the simulation of neutron behavior in a nuclear reactor fuel cell or fuel element. This code includes the main features of a cell code: interpolation of microscopic cross-sections obtained from libraries; self-shielding calculations in multidimensional geometries; multigroup and multidimensional neutron flux calculations; homogenization of nuclear properties for core calculations and isotopic depletion. In this workshop, participants will learn to use the DRAGON cell code in its fifth version, covering the different stages that constitute a generic input and performing various examples that reinforce the understanding of each of them. Finally, the use of external tools recommended by the developers as well as by the workshop instructors will be addressed.
 
-## Consideraciones generales
+## General Considerations
 
-1. El directorio principal contiene diversas carpetas con las entradas de DRAGON y algunos *scripts* ordenados en 5 directorios numerados. La numeración respeta el orden en que serán abordados los temas del taller.
+1. The main directory contains various folders with DRAGON inputs and scripts organized in 5 numbered directories. The numbering respects the order in which the workshop topics will be addressed.
 
-2. Se recomienda tener instalado GhostView para visualizar PostScripts y gnuplot para realizar gráficos en 2 y 3 dimensiones. Sin embargo, si usted cuenta con pyxplot, los gráficos 2D serán realizados con este programa en lugar de gnuplot.
+2. It is recommended to have GhostView installed for PostScript visualization and gnuplot for 2D and 3D plotting. However, if you have pyxplot available, 2D plots will be generated using this program instead of gnuplot.
 
-3. Como editor de texto se recomienda el uso de Kate debido a que hemos escrito el [*syntax highlighting*](https://github.com/rvignolo/dragon-highlighting) para DRAGON.
+3. As a text editor, the use of Kate is recommended since we have written [syntax highlighting](https://github.com/rvignolo/dragon-highlighting) for DRAGON.
 
-4. Es necesario tener instalado DRAGON globalmente y que pueda ser llamado a partir del comando `dragon`. Puede descargarlo desde el servidor [Merlin](http://www.polymtl.ca/merlin/version5.htm).
+4. It is necessary to have DRAGON installed globally and accessible via the `dragon` command. It can be downloaded from the [Merlin server](http://www.polymtl.ca/merlin/version5.htm).
 
-5. En la sección de [descargas](https://bitbucket.org/rvignolo/taller-dragon-garcar-2016/downloads) se encuentran unas filminas que puede utilizar para acompañar la lectura del taller.
+5. In the [downloads section](https://bitbucket.org/rvignolo/taller-dragon-garcar-2016/downloads), you will find slides that can be used to accompany the workshop reading.
 
-## Descripción de archivos
+## File Description
 
-Los directorios numerados del `1.` al `5.` contienen la totalidad de la parte práctica del taller, que incluye las entradas de DRAGON y scripts. En el caso genérico, un directorio puede contener los siguientes archivos:
+The numbered directories from `1.` to `5.` contain the complete practical part of the workshop, including DRAGON inputs and scripts. In the generic case, a directory may contain the following files:
 
-1. un archivo con extensión `.x2m` que corresponde al *input* de DRAGON.
+1. A file with `.x2m` extension that corresponds to the DRAGON input.
 
-2. uno o más archivos con extensión `.c2m` que corresponden a procedimientos de DRAGON.
+2. One or more files with `.c2m` extension that correspond to DRAGON procedures.
 
-3. `clean.sh` limpia la información obtenida luego de la ejecución de una entrada (tenga presente que puede modificar a su gusto este script).
+3. `clean.sh` cleans the information obtained after running an input (note that you can modify this script as needed).
 
-4. un *script* llamado `run.sh` que se encarga de ejecutar adecuadamente la entrada de DRAGON. Además, si se da la opción `-g`, imprimirá las salidas PostScript en GhostView. Por otro lado, si es necesario, llamará a otros *scripts* que se detallan a continuación.
+4. A script called `run.sh` that properly executes the DRAGON input. Additionally, if the `-g` option is given, it will display PostScript outputs in GhostView. Furthermore, if necessary, it will call other scripts detailed below.
 
-5. `xs-plot.sh` realiza gráficos de las secciones eficaces en gnuplot o pyxplot y en 2 y 3 dimensiones según cual sea el caso.
+5. `xs-plot.sh` generates cross-section plots in gnuplot or pyxplot and in 2D and 3D as appropriate.
 
-6. `compile.sh` compila las rutinas escritas en C con el uso de bibliotecas GanLib.
+6. `compile.sh` compiles C routines using GanLib libraries.
 
+After executing the `run.sh` script in each directory, in the most general case, files of the following type will be obtained:
 
-Luego de la ejecución del *script* `run.sh` en cada uno de los directorios, en el caso más general se obtendrán archivos del siguiente tipo:
+1. The file with `.result` extension contains the DRAGON output.
 
-1. el archivo con extensión `.result` posee la salida de DRAGON.
+2. Files with `.ps` extension contain geometry plots with region distribution, mixtures, or flux.
 
-2. los archivos con extensión `.ps` poseen gráficos de las geometrías con la distribución de regiones, *mixtures* o flujo.
+3. The file with `.m` extension contains ray tracing information that can be plotted in Matlab or Octave.
 
-3. el archivo con extensión `.m` posee la información del *ray tracing* capaz de ser graficada en Matlab o octave.
+4. `Database.dat` corresponds to the file generated by the `COMPO:` module of DRAGON and converted to ASCII. This file is the input for C routines that use GanLib to extract relevant information from a run.
 
-4. `Database.dat` se corresponde al archivo generado por el módulo `COMPO:` de DRAGON y convertido a ASCII. Este archivo es la entrada de las rutinas de C que utilizan GanLib para extraer la información pertinente de una corrida.
+5. Other files with `.dat` extension contain cross-section information after processing `Database.dat` with the C routines.
 
-5. los otros archivos con extensión `.dat` poseen la información de las secciones eficaces una vez procesado `Database.dat` con las rutinas de C.
+## Directory Description
 
-## Descripción de directorios
-
-Se explicarán brevemente y de forma individual cada directorio del
-taller.
+Each workshop directory will be briefly and individually explained.
 
 ### `1.materials`
 
-Este directorio contiene dos subdirectorios, `1.macroscopic` y `2.microscopic`, donde se especifica el formato de entrada para los módulos `MAC:` y `LIB:` respectivamente. Conviene prestar particular atención a, por ejemplo, el formato de las secciones eficaces de *scattering* y a los resultados de las corridas.
+This directory contains two subdirectories, `1.macroscopic` and `2.microscopic`, where the input format for the `MAC:` and `LIB:` modules respectively is specified. Particular attention should be paid to, for example, the format of scattering cross-sections and the results of the runs.
 
 ### `2.geometries-and-tracking`
 
-En este directorio se encuentran entradas que describen geometrías de diferentes tipos, a las que se les pueden aplicar diferentes módulos de *ray tracing*. Es importante analizar cada una de las geometrías y comprender tanto la definición de materiales como condiciones de contorno. Una vez entendido cada uno de estos casos, proponer una geometría y tratar de realizarla.
+This directory contains inputs that describe different types of geometries, to which different ray tracing modules can be applied. It is important to analyze each of the geometries and understand both material definitions and boundary conditions. Once each of these cases is understood, propose a geometry and try to implement it.
 
 ### `3.flux-calculation`
 
-Se propone el cálculo de flujo en una misma geometría pero definida de diferentes maneras. Comparar los resultados y comprender el uso de las nuevas herramientas de DRAGON, como los módulos `G2S:` y `SALT:`.
+Flux calculation is proposed in the same geometry but defined in different ways. Compare the results and understand the use of DRAGON's new tools, such as the `G2S:` and `SALT:` modules.
 
 ### `4.reference-burnup`
 
-El quemado de referencia es, justamente, una corrida que efectúa la evolución isotópica. La salida de esta corrida son las secciones eficaces en función del quemado. Lo importante es entender tanto el algoritmo utilizado para quemar como las herramientas empleadas para recopilar la información.
+The reference burnup is, precisely, a run that performs isotopic evolution. The output of this run consists of cross-sections as a function of burnup. The important aspects are understanding both the algorithm used for burning and the tools employed to collect the information.
 
 ### `5.local-perturbations`
 
-Las perturbaciones locales toman al quemado de referencia y lo recorren perturbando localmente algún parámetro. Esto permite obtener las secciones eficaces en función del quemado y de una perturbación local. Al post procesar estos valores pueden obtenerse, por ejemplo, las derivadas de las secciones eficaces respecto al parámetro local y en función del quemado.
+Local perturbations take the reference burnup and traverse it while locally perturbing some parameter. This allows obtaining cross-sections as a function of burnup and a local perturbation. By post-processing these values, it is possible to obtain, for example, the derivatives of cross-sections with respect to the local parameter as a function of burnup.

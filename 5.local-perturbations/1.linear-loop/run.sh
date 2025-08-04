@@ -1,14 +1,13 @@
 #!/bin/bash
 
 #------------+--------------+-------+------+-----++----+++---++++--+++++
-# TALLER
-# Aprendiendo a utilizar DRAGON V5 como código de producción de XSs
-# Grupo Argentino de Cálculo y Análisis de Reactores
-# III Reunión Anual
+# Workshop
+# Learning DRAGON V5 as a production code for XSs
+# Argentinean Group of Calculation and Reactor Analysis
+# III Annual Meeting
 #
 # File desc.: Geometry definition and Ray tracing
-# Ramiro Vignolo    <rvignolo@tecna.com>
-#                   <ramirovignolo@gmail.com>
+# Ramiro Vignolo    <ramirovignolo@gmail.com>
 #------------+--------------+-------+------+-----++----+++---++++--+++++
 
 # clean directory
@@ -18,13 +17,13 @@
 plot=0
 for opt in $*; do
   case $opt in
-    -g) 
+    -g)
         plot=1
         ;;
   esac
 done
 
-# lets find the dragon input
+# let's find the dragon input
 input=`ls -la | grep *.x2m | awk '{print $9}'`
 
 # and the library
@@ -37,11 +36,11 @@ output=${output}.result
 # if dragon is seen globally
 dragon <${input} > ${output}
 
-# te imprimo un poquito asi ves
+# print a little bit so you can see
 tail -5 ${output}; tput setaf 3; echo "    check out the ${output} file"; tput sgr0
 echo
 
-# en este caso, dibujamos
+# in this case, we draw
 if [ $plot = 1 ]; then
   tput setaf 4; echo "GhostView Graphics are on"; tput sgr0
   for i in *.ps; do
@@ -49,11 +48,11 @@ if [ $plot = 1 ]; then
   done
 fi
 
-# compilamos rutina de C usando GanLib
+# compile the C routine using GanLib
 ./compile.sh
 
-# generamos las XS
+# generate the XSs
 ./local-perturbation Database.dat
-# 
-# y las dibujamos
+
+# and draw them
 ./xs-plot.sh

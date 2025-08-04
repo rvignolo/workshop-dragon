@@ -6,10 +6,10 @@
 *  Use           : Flux calculation
 *  Authors       : R. Vignolo
 *
-*  Procedure called as: 
+*  Procedure called as:
 *
-*  MicLib_S Flux := CalcFlux MicLib ExcTrack_S Lines_S 
-*    ExcTrack_T Lines_T :: 
+*  MicLib_S Flux := CalcFlux MicLib ExcTrack_S Lines_S
+*    ExcTrack_T Lines_T ::
 *  <<burn_step>>
 *  <<bu_f>> <<next_bu_SS>>
 *  <<grmin>> <<grmax>>
@@ -18,7 +18,7 @@
 *------------+--------------+-------+------+-----++----+++---++++--+++++
 *
 PARAMETER MicLib_S Flux MicLib ExcTrack_S Lines_S ExcTrack_T Lines_T ::
-       EDIT 0 
+       EDIT 0
           ::: LINKED_LIST MicLib_S Flux MicLib ExcTrack_S ExcTrack_T ;
           ::: SEQ_BINARY  Lines_S Lines_T ;
    ;
@@ -85,7 +85,7 @@ IF burn_step 1 = THEN
     ;
 ELSE
   Flux := FLU: Flux Pij MicLib_S ExcTrack_T ::
-    EDIT 0  
+    EDIT 0
     TYPE B  B1 BUCK 0.0
     ;
 ENDIF ;
